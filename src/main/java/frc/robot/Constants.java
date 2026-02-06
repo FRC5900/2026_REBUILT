@@ -23,5 +23,38 @@ public final class Constants {
     public static final double kMaxOutput = 1; // speed i lowered it for you lol
   }
 
+  public static final class OperatorConstants {
+    public static final int kDriverControllerPort = 0;
+    public static final int kOperatorControllerPort = 1;
+  }
+  
+  public static final class IntakeConstants {
+    public static final int kLeftIntakeCanId = 6;
+    public static final int kRightIntakeCanId = 7;
+    public static final int kIndexerCanId = 8;
+
+    public static final int kIndexerLimit = 80;
+    public static final int kLauncherLimit = 80;
+
+    public static final double kIndexerIntakingPercent = -.8; 
+    public static final double kIndexerLaunchPercent = 0.6;
+    public static final double kIndexerSpinUpPreLaunchPercent = -0.5;
+
+    public static final double kIntakeLaunchPercent = 0.6;
+    public static final double kLaunchPercent = .85;
+    public static final double kIntakePukePercent = -0.8;
+
+    public static final double kIndexSpinUp = 0.75;
+  }
+
+  public static final class ClimbConstants {
+    
+    public static final int kClimbMotorCanId = 9;
+
+    public static final int kClimbMotorLimit = 40;
+    public static final double kClimbMotorDownPercent = 0.7;
+    public static final double kClimbMotorUpPercent = -0.7;
+  }
+
   private Constants() {}
 }

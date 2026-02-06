@@ -23,9 +23,6 @@ public class DriveSubsystem extends SubsystemBase {
   private final SparkMax m_rearRight = 
     new SparkMax(Constants.DriveConstants.kRearRightCanId, MotorType.kBrushless);
 
- 
-
-
   private final DifferentialDrive m_drive;
 
   public DriveSubsystem() {
