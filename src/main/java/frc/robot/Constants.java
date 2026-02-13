@@ -14,8 +14,8 @@ package frc.robot;
  */
 public final class Constants {
   public static final class DriveConstants {
-    public static final int kFrontLeftCanId = 5; //no clue what these are on the test board .-.
-    public static final int kRearLeftCanId = 4;
+    public static final int kFrontLeftCanId = 4; //no clue what these are on the test board .-.
+    public static final int kRearLeftCanId = 5;
     public static final int kFrontRightCanId = 2;
     public static final int kRearRightCanId = 3;
 
