@@ -78,7 +78,8 @@ public class RobotContainer {
             () -> {
               double trigger = m_operatorController.getRightTriggerAxis();
               if (trigger > 0.1) {
-                m_intake.setIntake(Constants.IntakeConstants.kIntakePower);
+                double indexerSpeed = m_shooter.getIndexerSpeed();
+                m_intake.setIntake(indexerSpeed * 0.9);
               } else {
                 m_intake.stop();
               }
