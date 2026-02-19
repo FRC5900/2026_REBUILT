@@ -47,7 +47,7 @@ public class ShooterSubsystem extends SubsystemBase {
     m_indexer.set(power);
   }
 
-  public double getIndexerSpeed() {
+  public double getIndexerPower() {
     return m_indexer.get();
   }
 
