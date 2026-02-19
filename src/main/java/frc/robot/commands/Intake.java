@@ -18,8 +18,8 @@ public class Intake extends Command {
 
   @Override
   public void initialize() {
-    m_shooter.setShooterRoller(ShooterConstants.kShooterLaunchPercent);
-    m_shooter.setIndexer(ShooterConstants.kIndexerIntakingPercent);
+    m_shooter.setShooterRoller(ShooterConstants.kShooterLaunchPower);
+    m_shooter.setIndexer(ShooterConstants.kIndexerIntakingPower);
   }
 
   @Override

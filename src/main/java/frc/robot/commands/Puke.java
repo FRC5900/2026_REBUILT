@@ -18,8 +18,8 @@ public class Puke extends Command {
 
   @Override
   public void initialize() {
-    m_shooter.setShooterRoller(-ShooterConstants.kShooterPukePercent);
-    m_shooter.setIndexer(ShooterConstants.kIndexerLaunchPercent);
+    m_shooter.setShooterRoller(-ShooterConstants.kShooterPukePower);
+    m_shooter.setIndexer(ShooterConstants.kIndexerLaunchPower);
   }
 
   @Override

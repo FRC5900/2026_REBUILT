@@ -18,7 +18,7 @@ public class ClimbUp extends Command {
 
   @Override
   public void initialize() {
-    m_climb.setClimb(ClimbConstants.kClimbMotorUpPercent);
+    m_climb.setClimb(ClimbConstants.kClimbMotorUpPower);
   }
 
   @Override

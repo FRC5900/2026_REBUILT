@@ -54,13 +54,13 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
-    new JoystickButton(m_driverController, 5) // Left Bumper, Intake
+    new JoystickButton(m_operatorController, 5) // Left Bumper, Intake
         .whileTrue(new Intake(m_shooter));
 
-    new JoystickButton(m_driverController, 6) // Right Bumper, Launch
+    new JoystickButton(m_operatorController, 6) // Right Bumper, Launch
         .whileTrue(new LaunchSequence(m_shooter));
 
-    new JoystickButton(m_driverController, 1) // A, Puke
+    new JoystickButton(m_operatorController, 1) // A, Puke
         .whileTrue(new Puke(m_shooter));
 
     new POVButton(m_driverController, 180) // D-Pad Down, Climb Down
