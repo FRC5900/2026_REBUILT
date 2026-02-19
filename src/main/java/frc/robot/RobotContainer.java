@@ -19,6 +19,7 @@ import frc.robot.commands.Puke;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
 public class RobotContainer {
   private final XboxController m_driverController = new XboxController(0);
@@ -27,6 +28,7 @@ public class RobotContainer {
   private final DriveSubsystem m_drive = new DriveSubsystem();
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
   private final ClimbSubsystem m_climber = new ClimbSubsystem();
+  private final ShooterSubsystem m_shooter = new ShooterSubsystem();
 
   public RobotContainer() {
     configureButtonBindings();
@@ -53,13 +55,13 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
     new JoystickButton(m_driverController, 5) // Left Bumper, Intake
-        .whileTrue(new Intake(m_intake));
+        .whileTrue(new Intake(m_shooter));
 
     new JoystickButton(m_driverController, 6) // Right Bumper, Launch
-        .whileTrue(new LaunchSequence(m_intake));
+        .whileTrue(new LaunchSequence(m_shooter));
 
     new JoystickButton(m_driverController, 1) // A, Puke
-        .whileTrue(new Puke(m_intake));
+        .whileTrue(new Puke(m_shooter));
 
     new POVButton(m_driverController, 180) // D-Pad Down, Climb Down
         .whileTrue(new ClimbDown(m_climber));
@@ -68,6 +70,19 @@ public class RobotContainer {
         .whileTrue(new ClimbUp(m_climber));
 
     m_climber.setDefaultCommand(m_climber.run(() -> m_climber.stopClimb()));
+
+    // Operator controller - Right Trigger runs intake at 90% speed
+    m_intake.setDefaultCommand(
+        new RunCommand(
+            () -> {
+              double trigger = m_operatorController.getRightTriggerAxis();
+              if (trigger > 0.1) {
+                m_intake.setIntake(Constants.IntakeConstants.kIntakePercent);
+              } else {
+                m_intake.stop();
+              }
+            },
+            m_intake));
   }
 
   public Command getAutonomousCommand() {

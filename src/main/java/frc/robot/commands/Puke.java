@@ -5,21 +5,21 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.IntakeConstants;
-import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.Constants.ShooterConstants;
+import frc.robot.subsystems.ShooterSubsystem;
 
 public class Puke extends Command {
-  private final IntakeSubsystem m_intake;
+  private final ShooterSubsystem m_shooter;
 
-  public Puke(IntakeSubsystem intakeSubsystem) {
-    m_intake = intakeSubsystem;
-    addRequirements(m_intake);
+  public Puke(ShooterSubsystem shooterSubsystem) {
+    m_shooter = shooterSubsystem;
+    addRequirements(m_shooter);
   }
 
   @Override
   public void initialize() {
-    m_intake.setIntakeLauncherRoller(-IntakeConstants.kIntakePukePercent);
-    m_intake.setFeederRoller(IntakeConstants.kIndexerLaunchPercent);
+    m_shooter.setShooterRoller(-ShooterConstants.kShooterPukePercent);
+    m_shooter.setIndexer(ShooterConstants.kIndexerLaunchPercent);
   }
 
   @Override
@@ -27,8 +27,8 @@ public class Puke extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    m_intake.setIntakeLauncherRoller(0);
-    m_intake.setFeederRoller(0);
+    m_shooter.setShooterRoller(0);
+    m_shooter.setIndexer(0);
   }
 
   @Override

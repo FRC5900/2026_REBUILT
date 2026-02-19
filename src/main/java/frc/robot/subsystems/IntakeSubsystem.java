@@ -1,3 +1,7 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
 package frc.robot.subsystems;
 
 import com.revrobotics.PersistMode;
@@ -11,41 +15,22 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
-  private final SparkMax m_leftIntake;
-  private final SparkMax m_rightIntake;
-  private final SparkMax m_indexer;
+  private final SparkMax m_intake;
 
   public IntakeSubsystem() {
-    m_leftIntake = new SparkMax(IntakeConstants.kLeftIntakeCanId, MotorType.kBrushless);
-    m_rightIntake = new SparkMax(IntakeConstants.kRightIntakeCanId, MotorType.kBrushless);
-    m_indexer = new SparkMax(IntakeConstants.kIndexerCanId, MotorType.kBrushless);
+    m_intake = new SparkMax(IntakeConstants.kIntakeCanId, MotorType.kBrushless);
 
-    SparkMaxConfig feederConfig = new SparkMaxConfig();
-    feederConfig.smartCurrentLimit(IntakeConstants.kIndexerLimit);
-    m_indexer.configure(feederConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
-    SparkMaxConfig launcherConfig = new SparkMaxConfig();
-    launcherConfig.smartCurrentLimit(IntakeConstants.kLauncherLimit);
-    launcherConfig.voltageCompensation(12);
-    launcherConfig.idleMode(IdleMode.kCoast);
-
-    m_rightIntake.configure(launcherConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    launcherConfig.inverted(true);
-    m_leftIntake.configure(launcherConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    SparkMaxConfig intakeConfig = new SparkMaxConfig();
+    intakeConfig.smartCurrentLimit(IntakeConstants.kIntakeLimit);
+    intakeConfig.idleMode(IdleMode.kCoast);
+    m_intake.configure(intakeConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
-  public void setIntakeLauncherRoller(double power) {
-    m_leftIntake.set(power);
-    m_rightIntake.set(power);
-  }
-
-  public void setFeederRoller(double power) {
-    m_indexer.set(power);
+  public void setIntake(double power) {
+    m_intake.set(power);
   }
 
   public void stop() {
-    m_indexer.set(0);
-    m_leftIntake.set(0);
-    m_rightIntake.set(0);
+    m_intake.set(0);
   }
 }

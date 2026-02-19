@@ -29,22 +29,9 @@ public final class Constants {
   }
   
   public static final class IntakeConstants {
-    public static final int kLeftIntakeCanId = 6;
-    public static final int kRightIntakeCanId = 7;
-    public static final int kIndexerCanId = 8;
-
-    public static final int kIndexerLimit = 80;
-    public static final int kLauncherLimit = 80;
-
-    public static final double kIndexerIntakingPercent = -.8; 
-    public static final double kIndexerLaunchPercent = 0.6;
-    public static final double kIndexerSpinUpPreLaunchPercent = -0.5;
-
-    public static final double kIntakeLaunchPercent = 0.6;
-    public static final double kLaunchPercent = .85;
-    public static final double kIntakePukePercent = -0.8;
-
-    public static final double kIndexSpinUp = 0.75;
+    public static final int kIntakeCanId = 10;
+    public static final int kIntakeLimit = 80;
+    public static final double kIntakePercent = 0.9;
   }
 
   public static final class ClimbConstants {
@@ -54,6 +41,25 @@ public final class Constants {
     public static final int kClimbMotorLimit = 40;
     public static final double kClimbMotorDownPercent = 0.7;
     public static final double kClimbMotorUpPercent = -0.7;
+  }
+
+  public static final class ShooterConstants {
+    public static final int kLeftShooterCanId = 6;
+    public static final int kRightShooterCanId = 7;
+    public static final int kIndexerCanId = 8;
+
+    public static final int kIndexerLimit = 80;
+    public static final int kShooterLimit = 80;
+
+    public static final double kIndexerIntakingPercent = -0.8;
+    public static final double kIndexerLaunchPercent = 0.6;
+    public static final double kIndexerSpinUpPreLaunchPercent = -0.5;
+
+    public static final double kShooterLaunchPercent = 0.6;
+    public static final double kLaunchPercent = 0.85;
+    public static final double kShooterPukePercent = -0.8;
+
+    public static final double kIndexSpinUp = 0.75;
   }
 
   private Constants() {}
