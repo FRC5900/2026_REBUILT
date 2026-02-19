@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -25,6 +26,9 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class RobotContainer {
   private final XboxController m_driverController = new XboxController(0);
   private final XboxController m_operatorController = new XboxController(1);
+
+  private final SlewRateLimiter m_turnLimiter =
+      new SlewRateLimiter(Constants.DriveConstants.kTurnSlewRate);
 
   private final DriveSubsystem m_drive = new DriveSubsystem();
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
@@ -48,6 +52,7 @@ public class RobotContainer {
               turn =
                   MathUtil.applyDeadband(turn, Constants.DriveConstants.kDeadband)
                       * Constants.DriveConstants.kMaxOutput;
+              turn = m_turnLimiter.calculate(turn);
 
               m_drive.arcadeDrive(forward, turn);
             },
@@ -56,7 +61,7 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
     new JoystickButton(m_operatorController, 5) // Left Bumper, Intake
-        .whileTrue(new Intake(m_shooter));
+        .whileTrue(new Intake(m_intake, m_shooter));
 
     new JoystickButton(m_operatorController, 6) // Right Bumper, Launch
         .whileTrue(new LaunchSequence(m_shooter));

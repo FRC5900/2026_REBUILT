@@ -5,29 +5,35 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class Intake extends Command {
+  private final IntakeSubsystem m_intake;
   private final ShooterSubsystem m_shooter;
 
-  public Intake(ShooterSubsystem shooterSubsystem) {
+  public Intake(IntakeSubsystem intakeSubsystem, ShooterSubsystem shooterSubsystem) {
+    m_intake = intakeSubsystem;
     m_shooter = shooterSubsystem;
-    addRequirements(m_shooter);
+    addRequirements(m_intake, m_shooter);
   }
 
   @Override
   public void initialize() {
-    m_shooter.setShooterRoller(ShooterConstants.kShooterLaunchPower);
+    m_intake.setIntake(IntakeConstants.kIntakePower);
     m_shooter.setIndexer(ShooterConstants.kIndexerIntakingPower);
   }
 
   @Override
-  public void execute() {}
+  public void execute() {
+    
+  }
 
   @Override
   public void end(boolean interrupted) {
-    m_shooter.setShooterRoller(0);
+    m_intake.stop();
     m_shooter.setIndexer(0);
   }
 
