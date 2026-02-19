@@ -16,6 +16,7 @@ import frc.robot.commands.ClimbUp;
 import frc.robot.commands.Intake;
 import frc.robot.commands.LaunchSequence;
 import frc.robot.commands.Puke;
+
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -39,7 +40,7 @@ public class RobotContainer {
               double forward =
                   m_driverController.getRightTriggerAxis()
                       - m_driverController.getLeftTriggerAxis();
-              double turn = m_driverController.getLeftX();
+              double turn = m_driverController.getRightX();
 
               forward =
                   MathUtil.applyDeadband(forward, Constants.DriveConstants.kDeadband)
@@ -77,7 +78,7 @@ public class RobotContainer {
             () -> {
               double trigger = m_operatorController.getRightTriggerAxis();
               if (trigger > 0.1) {
-                m_intake.setIntake(Constants.IntakeConstants.kIntakePercent);
+                m_intake.setIntake(Constants.IntakeConstants.kIntakePower);
               } else {
                 m_intake.stop();
               }

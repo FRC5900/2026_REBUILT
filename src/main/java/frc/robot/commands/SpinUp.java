@@ -19,7 +19,7 @@ public class SpinUp extends Command {
   @Override
   public void initialize() {
     m_shooter.setShooterRoller(ShooterConstants.kLaunchPower);
-    m_shooter.setIndexer(ShooterConstants.kIndexerSpinUpPreLaunchPower);
+    m_shooter.setIndexer(ShooterConstants.kIndexerSpinUp);
   }
 
   @Override
