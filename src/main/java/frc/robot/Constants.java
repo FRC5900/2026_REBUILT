@@ -13,11 +13,11 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  //fix michaels code :D
+  //fix michaels code :D -- Justin
   //this comment did indeed fix michaels github desktop :D -- michael
   public static final class DriveConstants {
     //SparkMaxs
-    public static final int kFrontLeftCanId = 4; //no clue what these are on the test board .-.
+    public static final int kFrontLeftCanId = 4; //no clue what these are on the test board .-. -- Justin
     public static final int kRearLeftCanId = 5;
     public static final int kFrontRightCanId = 2;
     public static final int kRearRightCanId = 3;
@@ -25,6 +25,14 @@ public final class Constants {
     public static final double kDeadband = 0.08;
     public static final double kMaxOutput = 1; // speed i lowered it for you lol
     public static final double kTurnSlewRate = 3.0; // units per second
+    public static final double kForwardSlewRate = 3.0; // units per second
+
+
+    //Pathplanner stuff
+    public static final double kTrackWidthMeters = 0.5906; 
+    public static final double kWheelDiameterMeters = 0.1524; // 6" wheels = 0.1524m
+    public static final double kGearRatio = 10.71; //motor rotations per wheel rotation     WE NEED TO FIGURE THIS OUT :D -- Justin
+    public static final double kMaxSpeedMetersPerSec = 1;
   }
 
   

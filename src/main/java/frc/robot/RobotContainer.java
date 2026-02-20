@@ -23,40 +23,87 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
+//pathplanner stuff
+import com.pathplanner.lib.auto.AutoBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import com.pathplanner.lib.auto.NamedCommands;
+
 public class RobotContainer {
   private final XboxController m_driverController = new XboxController(0);
   private final XboxController m_operatorController = new XboxController(1);
 
   private final SlewRateLimiter m_turnLimiter =
       new SlewRateLimiter(Constants.DriveConstants.kTurnSlewRate);
+  private final SlewRateLimiter m_forwardLimiter =
+      new SlewRateLimiter(Constants.DriveConstants.kForwardSlewRate);
 
   private final DriveSubsystem m_drive = new DriveSubsystem();
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
   private final ClimbSubsystem m_climber = new ClimbSubsystem();
   private final ShooterSubsystem m_shooter = new ShooterSubsystem();
 
+ private SendableChooser<Command> m_autoChooser;
+
   public RobotContainer() {
     configureButtonBindings();
 
-    m_drive.setDefaultCommand(
-        new RunCommand(
-            () -> {
-              double forward =
-                  m_driverController.getRightTriggerAxis()
-                      - m_driverController.getLeftTriggerAxis();
-              double turn = m_driverController.getRightX();
+    //PATHPLANNER \//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+   
 
-              forward =
-                  MathUtil.applyDeadband(forward, Constants.DriveConstants.kDeadband)
-                      * Constants.DriveConstants.kMaxOutput;
-              turn =
-                  MathUtil.applyDeadband(turn, Constants.DriveConstants.kDeadband)
-                      * Constants.DriveConstants.kMaxOutput;
-              turn = m_turnLimiter.calculate(turn);
+    NamedCommands.registerCommand(
+    "Intake",
+    new Intake(m_intake, m_shooter));
 
-              m_drive.arcadeDrive(forward, turn);
-            },
-            m_drive));
+    NamedCommands.registerCommand(
+    "Puke",
+    new Puke(m_shooter));
+
+    NamedCommands.registerCommand(
+    "Launch",
+    new LaunchSequence(m_shooter));
+    NamedCommands.registerCommand(
+    "Climb Up",
+    new ClimbUp(m_climber));
+    NamedCommands.registerCommand(
+    "Climb Down",
+    new ClimbDown(m_climber));
+
+
+
+
+    m_autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Auto Chooser", m_autoChooser);
+   
+    //PATHPLANNER /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+
+m_drive.setDefaultCommand(
+    new RunCommand(
+        () -> {
+          double forward =
+              m_driverController.getRightTriggerAxis()
+                  - m_driverController.getLeftTriggerAxis();
+          double turn = m_driverController.getRightX();
+
+          forward =
+              MathUtil.applyDeadband(forward, Constants.DriveConstants.kDeadband)
+                  * Constants.DriveConstants.kMaxOutput;
+
+          //instant stop smooth acceleration
+          if (forward == 0.0) {
+            m_forwardLimiter.reset(0.0);
+          } else {
+            forward = m_forwardLimiter.calculate(forward);
+          }
+
+          turn =
+              MathUtil.applyDeadband(turn, Constants.DriveConstants.kDeadband)
+                  * Constants.DriveConstants.kMaxOutput;
+          turn = m_turnLimiter.calculate(turn);
+
+          m_drive.arcadeDrive(forward, turn);
+        },
+        m_drive));
   }
 
   private void configureButtonBindings() {
@@ -77,26 +124,9 @@ public class RobotContainer {
 
     m_climber.setDefaultCommand(m_climber.run(() -> m_climber.stopClimb()));
 
-    // Operator controller - Right Trigger runs intake at 90% speed
-    m_intake.setDefaultCommand(
-        new RunCommand(
-            () -> {
-              double trigger = m_operatorController.getRightTriggerAxis();
-              if (trigger > 0.1) {
-                //Fractionally scale the intake speed based on the shooter's indexer speed
-                double indexerPower = m_shooter.getIndexerPower();
-                m_intake.setIntake(indexerPower * Constants.IntakeConstants.kIntakePower);
-
-                /*//  Alternative
-                m_intake.setIntake(Constants.IntakeConstants.kIntakePower);*/
-               } else {
-                m_intake.stop();
-              }
-            },
-            m_intake));
   }
 
   public Command getAutonomousCommand() {
-    return null;
+  return m_autoChooser.getSelected();
   }
 }
