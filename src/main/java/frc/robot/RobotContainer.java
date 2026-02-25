@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 
+import frc.robot.commands.AlignToHub;
 import frc.robot.commands.ClimbDown;
 import frc.robot.commands.ClimbUp;
 import frc.robot.commands.Intake;
@@ -28,6 +29,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.pathplanner.lib.auto.NamedCommands;
+import frc.robot.subsystems.VisionSubsystem;
 
 public class RobotContainer {
   private final XboxController m_driverController = new XboxController(0);
@@ -43,8 +45,9 @@ public class RobotContainer {
   private final ClimbSubsystem m_climber = new ClimbSubsystem();
   private final ShooterSubsystem m_shooter = new ShooterSubsystem();
 
- private SendableChooser<Command> m_autoChooser;
+    private final VisionSubsystem m_vision = new VisionSubsystem();
 
+   private SendableChooser<Command> m_autoChooser;
   public RobotContainer() {
     configureButtonBindings();
 
@@ -124,7 +127,10 @@ m_drive.setDefaultCommand(
     new POVButton(m_driverController, 0) // D-Pad Up, Climb Up
         .whileTrue(new ClimbUp(m_climber));
 
-    m_shooter.setDefaultCommand(m_shooter.run(() -> m_shooter.stop()));
+    new JoystickButton(m_driverController, 1) // A Button, Align to Hub
+        .whileTrue(new AlignToHub(m_drive, m_vision));
+
+          m_shooter.setDefaultCommand(m_shooter.run(() -> m_shooter.stop()));
 
     m_climber.setDefaultCommand(m_climber.run(() -> m_climber.stopClimb()));
 

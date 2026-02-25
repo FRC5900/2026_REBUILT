@@ -79,7 +79,66 @@ public final class Constants {
     public static final double kShooterLaunchPower = 0.6;
     public static final double kLaunchPower = 0.85;
     public static final double kShooterPukePower = -0.8;
+
+  }
+
+  public static final class LEDConstants {
+    public static final int kBlinkinPort = 0;
+  }
+
+  public static final class VisionConstants {
     
+    public static final String kCamera0Name = "BW_1";
+    public static final String kCamera1Name = "BW_2";
+
+    //robot transforms to camera (x forward, y left, z up)
+
+    //camera 0 - front left
+
+    public static final double kCamera0X = 0.2;  // meters forward
+    public static final double kCamera0Y = 0.15;  // meters left
+    public static final double kCamera0Z = 0.2;  // meters up
+    public static final double kCamera0Roll = 0.0;
+    public static final double kCamera0Pitch = -0.4;
+    public static final double kCamera0Yaw = 0.0; 
+
+    //camera 1 - front right
+
+    public static final double kCamera1X = 0.2;  // meters forward
+    public static final double kCamera1Y = -0.15;  // meters right
+    public static final double kCamera1Z = 0.2; // meters up
+    public static final double kCamera1Roll = 0.0;
+    public static final double kCamera1Pitch = -0.4;
+    public static final double kCamera1Yaw = 0.0;  
+
+    //filtering thresholds
+    public static final double kMaxAmbiguity = 0.3;
+    public static final double kMaxZError = 0.75;
+
+    //deviation thresholds
+    public static final double kLinearStdDevBaseline = 0.02;
+    public static final double kAngularStdDevBaseline = 0.06;
+
+    //camera biases
+    public static final double kCamera0StdDevFactor = 1.0;
+    public static final double kCamera1StdDevFactor = 1.0;
+
+    //rotation)
+    public static final double kAlignRotationP = 0.05;
+    public static final double kAlignRotationI = 0.0;
+    public static final double kAlignRotationD = 0.0;
+    public static final double kAlignRotationTolerance = 2.0;
+
+    //distance
+    public static final double kAlignDistanceP = 1.0;
+    public static final double kAlignDistanceI = 0.0;
+    public static final double kAlignDistanceD = 0.0;
+    public static final double kShootingDistanceMeters = 0.3048;
+    public static final double kDistanceToleranceMeters = 0.05;
+
+    //tags
+    public static final int kRedHubTagId = 10;
+    public static final int kBlueHubTagId = 26;
   }
 
   private Constants() {}
