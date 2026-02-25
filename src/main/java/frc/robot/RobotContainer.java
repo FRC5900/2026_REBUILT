@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 
+import frc.robot.commands.AlignToHub;
 import frc.robot.commands.ClimbDown;
 import frc.robot.commands.ClimbUp;
 import frc.robot.commands.Intake;
@@ -22,6 +23,7 @@ import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 
 public class RobotContainer {
   private final XboxController m_driverController = new XboxController(0);
@@ -34,6 +36,7 @@ public class RobotContainer {
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
   private final ClimbSubsystem m_climber = new ClimbSubsystem();
   private final ShooterSubsystem m_shooter = new ShooterSubsystem();
+  private final VisionSubsystem m_vision = new VisionSubsystem();
 
   public RobotContainer() {
     configureButtonBindings();
@@ -74,6 +77,9 @@ public class RobotContainer {
 
     new POVButton(m_driverController, 0) // D-Pad Up, Climb Up
         .whileTrue(new ClimbUp(m_climber));
+
+    new JoystickButton(m_driverController, 1) // A Button, Align to Hub
+        .whileTrue(new AlignToHub(m_drive, m_vision));
 
     m_climber.setDefaultCommand(m_climber.run(() -> m_climber.stopClimb()));
 
