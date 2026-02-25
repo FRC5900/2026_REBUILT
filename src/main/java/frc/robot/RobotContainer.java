@@ -113,6 +113,8 @@ m_drive.setDefaultCommand(
     new JoystickButton(m_operatorController, 6) // Right Bumper, Launch
         .whileTrue(new LaunchSequence(m_shooter));
 
+    
+
     new JoystickButton(m_operatorController, 1) // A, Puke
         .whileTrue(new Puke(m_shooter));
 
@@ -121,6 +123,8 @@ m_drive.setDefaultCommand(
 
     new POVButton(m_driverController, 0) // D-Pad Up, Climb Up
         .whileTrue(new ClimbUp(m_climber));
+
+    m_shooter.setDefaultCommand(m_shooter.run(() -> m_shooter.stop()));
 
     m_climber.setDefaultCommand(m_climber.run(() -> m_climber.stopClimb()));
 
