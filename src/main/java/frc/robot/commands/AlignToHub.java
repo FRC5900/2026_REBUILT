@@ -50,6 +50,7 @@ public class AlignToHub extends Command {
   @Override
   public void execute() {
     int targetId = getTargetTagId();
+    SmartDashboard.putNumber("Hub/LookingForTag", targetId);
 
     PhotonTrackedTarget target = m_vision.getTargetById(targetId);
 
@@ -79,6 +80,8 @@ public class AlignToHub extends Command {
     } else {
       m_drive.arcadeDrive(0, 0);
       SmartDashboard.putBoolean("Hub/Aligned", false);
+      SmartDashboard.putNumber("Hub/Distance", -1);
+      SmartDashboard.putNumber("Hub/Yaw", 0);
     }
   }
 
