@@ -62,12 +62,11 @@ public class AlignToHub extends Command {
       double distanceMeters = Math.hypot(cameraToTarget.getX(), cameraToTarget.getY());
 
       //center on tag
-      double rotationOutput = m_rotationController.calculate(yaw);
+      double rotationOutput = -m_rotationController.calculate(yaw);
       rotationOutput = MathUtil.clamp(rotationOutput, -0.4, 0.4);
 
       //calculate forward distance
-
-      double forwardOutput = m_distanceController.calculate(distanceMeters);
+      double forwardOutput = -m_distanceController.calculate(distanceMeters);
       forwardOutput = MathUtil.clamp(forwardOutput, -0.4, 0.4);
 
       m_drive.arcadeDrive(forwardOutput, rotationOutput);
@@ -76,6 +75,8 @@ public class AlignToHub extends Command {
 
       SmartDashboard.putNumber("Hub/Distance", distanceMeters);
       SmartDashboard.putNumber("Hub/Yaw", yaw);
+      SmartDashboard.putNumber("Hub/ForwardOutput", forwardOutput);
+      SmartDashboard.putNumber("Hub/RotationOutput", rotationOutput);
       SmartDashboard.putBoolean("Hub/Aligned", isAligned());
     } else {
       m_drive.arcadeDrive(0, 0);
