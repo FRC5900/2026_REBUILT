@@ -48,6 +48,14 @@ public class AlignToHub extends Command {
   }
 
   @Override
+  public void initialize() {
+    System.out.println("AlignToHub STARTED");
+    SmartDashboard.putBoolean("Hub/CommandRunning", true);
+    m_rotationController.reset();
+    m_distanceController.reset();
+  }
+
+  @Override
   public void execute() {
     int targetId = getTargetTagId();
     SmartDashboard.putNumber("Hub/LookingForTag", targetId);
@@ -93,6 +101,7 @@ public class AlignToHub extends Command {
   @Override
   public void end(boolean interrupted) {
     m_drive.arcadeDrive(0, 0);
+    SmartDashboard.putBoolean("Hub/CommandRunning", false);
   }
 
   @Override
