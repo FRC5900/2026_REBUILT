@@ -6,13 +6,14 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class LaunchSequence extends SequentialCommandGroup {
 
-  public LaunchSequence(ShooterSubsystem shooterSubsystem) {
+  public LaunchSequence(ShooterSubsystem shooterSubsystem, IntakeSubsystem intakeSubsystem) {
     addCommands(
         new SpinUp(shooterSubsystem).withTimeout(ShooterConstants.kIndexSpinUpTime),
-        new Launch(shooterSubsystem));
+        new Launch(shooterSubsystem, intakeSubsystem));
   }
 }

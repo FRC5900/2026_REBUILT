@@ -64,7 +64,7 @@ public class RobotContainer {
 
     NamedCommands.registerCommand(
     "Launch",
-    new LaunchSequence(m_shooter));
+    new LaunchSequence(m_shooter, m_intake));
     NamedCommands.registerCommand(
     "Climb Up",
     new ClimbUp(m_climber));
@@ -114,7 +114,7 @@ m_drive.setDefaultCommand(
         .whileTrue(new Intake(m_intake, m_shooter));
 
     new JoystickButton(m_operatorController, 6) // Right Bumper, Launch
-        .whileTrue(new LaunchSequence(m_shooter));
+        .whileTrue(new LaunchSequence(m_shooter, m_intake));
 
     
 
@@ -131,6 +131,7 @@ m_drive.setDefaultCommand(
         .whileTrue(new AlignToHub(m_drive, m_vision));
 
           m_shooter.setDefaultCommand(m_shooter.run(() -> m_shooter.stop()));
+          m_intake.setDefaultCommand(m_intake.run(() -> m_intake.stop()));
 
     m_climber.setDefaultCommand(m_climber.run(() -> m_climber.stopClimb()));
 

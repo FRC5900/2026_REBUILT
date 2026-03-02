@@ -44,7 +44,7 @@ public final class Constants {
     public static final int kIntakeLimit = 40;
 
     //Intake Speeds
-    public static final double kIntakePower = 0.9;
+    public static final double kIntakePower = -0.9;
   }
 
   public static final class ClimbConstants {
@@ -79,6 +79,10 @@ public final class Constants {
     public static final double kShooterLaunchPower = 0.6;
     public static final double kLaunchPower = 0.85;
     public static final double kShooterPukePower = -0.8;
+
+    //Intake
+
+    public static final double kIntakeShootPower = -0.5;
 
   }
 
