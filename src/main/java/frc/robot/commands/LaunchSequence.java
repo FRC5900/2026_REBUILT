@@ -13,7 +13,7 @@ public class LaunchSequence extends SequentialCommandGroup {
 
   public LaunchSequence(ShooterSubsystem shooterSubsystem, IntakeSubsystem intakeSubsystem) {
     addCommands(
-        new SpinUp(shooterSubsystem).withTimeout(ShooterConstants.kIndexSpinUpTime),
+        new SpinUp(shooterSubsystem, intakeSubsystem).withTimeout(ShooterConstants.kIndexSpinUpTime),
         new Launch(shooterSubsystem, intakeSubsystem));
   }
 }

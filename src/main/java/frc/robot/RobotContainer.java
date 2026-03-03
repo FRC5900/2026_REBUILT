@@ -35,7 +35,7 @@ public class RobotContainer {
 
   private final SlewRateLimiter m_turnLimiter =
       new SlewRateLimiter(Constants.DriveConstants.kTurnSlewRate);
-  private final SlewRateLimiter m_forwardLimiter =
+  private final SlewRateLimiter m_forwardLimiter = 
       new SlewRateLimiter(Constants.DriveConstants.kForwardSlewRate);
 
   private final DriveSubsystem m_drive = new DriveSubsystem();
