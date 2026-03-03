@@ -6,11 +6,9 @@ package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.POVButton;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import frc.robot.commands.AlignToHub;
 import frc.robot.commands.ClimbDown;
@@ -32,8 +30,8 @@ import com.pathplanner.lib.auto.NamedCommands;
 import frc.robot.subsystems.VisionSubsystem;
 
 public class RobotContainer {
-  private final XboxController m_driverController = new XboxController(0);
-  private final XboxController m_operatorController = new XboxController(1);
+  private final CommandXboxController m_driverController = new CommandXboxController(0);
+  private final CommandXboxController m_operatorController = new CommandXboxController(1);
 
   private final SlewRateLimiter m_turnLimiter =
       new SlewRateLimiter(Constants.DriveConstants.kTurnSlewRate);
@@ -84,9 +82,9 @@ m_drive.setDefaultCommand(
     new RunCommand(
         () -> {
           double forward =
-              m_driverController.getRightTriggerAxis()
-                  - m_driverController.getLeftTriggerAxis();
-          double turn = m_driverController.getRightX();
+              m_driverController.getHID().getRightTriggerAxis()
+                  - m_driverController.getHID().getLeftTriggerAxis();
+          double turn = m_driverController.getHID().getRightX();
 
           forward =
               MathUtil.applyDeadband(forward, Constants.DriveConstants.kDeadband)
@@ -110,31 +108,30 @@ m_drive.setDefaultCommand(
   }
 
   private void configureButtonBindings() {
-    new JoystickButton(m_operatorController, 5) // Left Bumper, Intake
+    // Operator controls
+    m_operatorController.leftBumper() // Left Bumper, Intake
         .whileTrue(new Intake(m_intake, m_shooter));
 
-    new JoystickButton(m_operatorController, 6) // Right Bumper, Launch
+    m_operatorController.rightBumper() // Right Bumper, Launch
         .whileTrue(new LaunchSequence(m_shooter, m_intake));
 
-    
-
-    new JoystickButton(m_operatorController, 1) // A, Puke
+    m_operatorController.a() // A, Puke
         .whileTrue(new Puke(m_shooter));
 
-    new POVButton(m_driverController, 180) // D-Pad Down, Climb Down
+    // Driver controls
+    m_driverController.povDown() // D-Pad Down, Climb Down
         .whileTrue(new ClimbDown(m_climber));
 
-    new POVButton(m_driverController, 0) // D-Pad Up, Climb Up
+    m_driverController.povUp() // D-Pad Up, Climb Up
         .whileTrue(new ClimbUp(m_climber));
 
-    new JoystickButton(m_driverController, 1) // A Button, Align to Hub
+    m_driverController.a() // A Button, Align to Hub
         .whileTrue(new AlignToHub(m_drive, m_vision));
 
-          m_shooter.setDefaultCommand(m_shooter.run(() -> m_shooter.stop()));
-          m_intake.setDefaultCommand(m_intake.run(() -> m_intake.stop()));
-
+    // Default commands
+    m_shooter.setDefaultCommand(m_shooter.run(() -> m_shooter.stop()));
+    m_intake.setDefaultCommand(m_intake.run(() -> m_intake.stop()));
     m_climber.setDefaultCommand(m_climber.run(() -> m_climber.stopClimb()));
-
   }
 
   public Command getAutonomousCommand() {

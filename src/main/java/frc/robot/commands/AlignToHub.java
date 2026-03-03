@@ -41,15 +41,21 @@ public class AlignToHub extends Command {
 
   private int getTargetTagId() {
     var alliance = DriverStation.getAlliance();
-    if (alliance.isPresent() && alliance.get() == Alliance.Red) {
+    if (alliance.isPresent()) {
+      SmartDashboard.putString("Hub/Alliance", alliance.get().toString());
+      if (alliance.get() == Alliance.Red) {
+        return VisionConstants.kRedHubTagId;
+      } else {
+        return VisionConstants.kBlueHubTagId;
+      }
+    } else {
+      SmartDashboard.putString("Hub/Alliance", "NOT SET - using Red");
       return VisionConstants.kRedHubTagId;
     }
-    return VisionConstants.kBlueHubTagId;
   }
 
   @Override
   public void initialize() {
-    System.out.println("AlignToHub STARTED");
     SmartDashboard.putBoolean("Hub/CommandRunning", true);
     m_rotationController.reset();
     m_distanceController.reset();
@@ -58,9 +64,12 @@ public class AlignToHub extends Command {
   @Override
   public void execute() {
     int targetId = getTargetTagId();
+
     SmartDashboard.putNumber("Hub/LookingForTag", targetId);
+    SmartDashboard.putBoolean("Hub/CommandRunning", true);
 
     PhotonTrackedTarget target = m_vision.getTargetById(targetId);
+    SmartDashboard.putBoolean("Hub/TargetFound", target != null);
 
     if (target != null) {
       // Get yaw for rotation alignment
@@ -71,11 +80,11 @@ public class AlignToHub extends Command {
 
       //center on tag
       double rotationOutput = -m_rotationController.calculate(yaw);
-      rotationOutput = MathUtil.clamp(rotationOutput, -0.4, 0.4);
+      rotationOutput = MathUtil.clamp(rotationOutput, -0.6, 0.6);
 
       //calculate forward distance
-      double forwardOutput = -m_distanceController.calculate(distanceMeters);
-      forwardOutput = MathUtil.clamp(forwardOutput, -0.4, 0.4);
+      double forwardOutput = m_distanceController.calculate(distanceMeters);
+      forwardOutput = MathUtil.clamp(forwardOutput, -0.6, 0.6);
 
       m_drive.arcadeDrive(forwardOutput, rotationOutput);
 
@@ -91,6 +100,8 @@ public class AlignToHub extends Command {
       SmartDashboard.putBoolean("Hub/Aligned", false);
       SmartDashboard.putNumber("Hub/Distance", -1);
       SmartDashboard.putNumber("Hub/Yaw", 0);
+      SmartDashboard.putNumber("Hub/ForwardOutput", 0);
+      SmartDashboard.putNumber("Hub/RotationOutput", 0);
     }
   }
 

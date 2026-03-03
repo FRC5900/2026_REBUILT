@@ -24,8 +24,8 @@ public final class Constants {
 
     public static final double kDeadband = 0.08;
     public static final double kMaxOutput = 1; // speed i lowered it for you lol
-    public static final double kTurnSlewRate = 3.0; // units per second
-    public static final double kForwardSlewRate = 3.0; // units per second
+    public static final double kTurnSlewRate = 5.0; // units per second
+    public static final double kForwardSlewRate = 5.0; // units per second
 
 
     //Pathplanner stuff
@@ -127,17 +127,17 @@ public final class Constants {
     public static final double kCamera0StdDevFactor = 1.0;
     public static final double kCamera1StdDevFactor = 1.0;
 
-    //rotation)
-    public static final double kAlignRotationP = 0.05;
+    //rotation
+    public static final double kAlignRotationP = 0.04;
     public static final double kAlignRotationI = 0.0;
     public static final double kAlignRotationD = 0.0;
-    public static final double kAlignRotationTolerance = 2.0;
+    public static final double kAlignRotationTolerance = 2.5;
 
     //distance
-    public static final double kAlignDistanceP = 1.0;
+    public static final double kAlignDistanceP = 2.0;
     public static final double kAlignDistanceI = 0.0;
-    public static final double kAlignDistanceD = 0.0;
-    public static final double kShootingDistanceMeters = 0.3048;
+    public static final double kAlignDistanceD = 0.05;
+    public static final double kShootingDistanceMeters = 3.073  ; // 6.5 feet
     public static final double kDistanceToleranceMeters = 0.05;
 
     //tags
