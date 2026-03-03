@@ -82,7 +82,7 @@ public final class Constants {
 
     //Intake
 
-    public static final double kIntakeShootPower = -0.5;
+    public static final double kIntakeShootPower = -1;
 
   }
 
