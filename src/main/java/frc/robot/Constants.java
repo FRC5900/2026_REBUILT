@@ -137,7 +137,7 @@ public final class Constants {
     public static final double kAlignDistanceP = 2.0;
     public static final double kAlignDistanceI = 0.0;
     public static final double kAlignDistanceD = 0.05;
-    public static final double kShootingDistanceMeters = 3.073  ; // 6.5 feet
+    public static final double kShootingDistanceMeters = 2.934; // correct now probably :D
     public static final double kDistanceToleranceMeters = 0.05;
 
     //tags
