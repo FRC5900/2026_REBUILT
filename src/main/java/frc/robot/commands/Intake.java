@@ -42,6 +42,7 @@ public class Intake extends Command {
     return false;
   }
 }
-// hello :3
-// Hello
-//hola
+// hello :3 -Jaiden
+// Hello -Thati
+//hola -Justin
+// john hello - mike-eel
