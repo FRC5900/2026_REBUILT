@@ -158,15 +158,20 @@ public class VisionSubsystem extends SubsystemBase {
   
 // get target
 
+
+  private int lastTargetCamera = -1;
+
   public PhotonTrackedTarget getTargetById(int tagId) {
     PhotonTrackedTarget best = null;
     double bestArea = 0;
+    int bestCamera = -1;
 
     if (latestResult0 != null && latestResult0.hasTargets()) {
       for (PhotonTrackedTarget target : latestResult0.getTargets()) {
         if (target.getFiducialId() == tagId && target.getArea() > bestArea) {
           best = target;
           bestArea = target.getArea();
+          bestCamera = 0;
         }
       }
     }
@@ -175,15 +180,85 @@ public class VisionSubsystem extends SubsystemBase {
         if (target.getFiducialId() == tagId && target.getArea() > bestArea) {
           best = target;
           bestArea = target.getArea();
+          bestCamera = 1;
         }
       }
     }
+    lastTargetCamera = bestCamera;
     return best;
+  }
+
+  //get y offset
+  public double getLastTargetCameraYOffset() {
+    if (lastTargetCamera == 0) {
+      return VisionConstants.kCamera0Y;
+    } else if (lastTargetCamera == 1) {
+      return VisionConstants.kCamera1Y;
+    }
+    return 0.0;
   }
 
   public double getYawToTag(int tagId) {
     PhotonTrackedTarget target = getTargetById(tagId);
     return target != null ? target.getYaw() : 0.0;
+  }
+
+  
+  public DualTagResult getDualTagData(int leftTagId, int rightTagId) {
+    PhotonTrackedTarget leftTarget = getTargetById(leftTagId);
+    PhotonTrackedTarget rightTarget = getTargetById(rightTagId);
+
+    boolean hasLeft = leftTarget != null;
+    boolean hasRight = rightTarget != null;
+
+    if (hasLeft && hasRight) {
+      // calculate midpoint
+      double leftYaw = leftTarget.getYaw();
+      double rightYaw = rightTarget.getYaw();
+      double avgYaw = (leftYaw + rightYaw) / 2.0;
+
+      Transform3d leftTransform = leftTarget.getBestCameraToTarget();
+      Transform3d rightTransform = rightTarget.getBestCameraToTarget();
+      double leftDist = Math.hypot(leftTransform.getX(), leftTransform.getY());
+      double rightDist = Math.hypot(rightTransform.getX(), rightTransform.getY());
+      double avgDist = (leftDist + rightDist) / 2.0;
+
+      return new DualTagResult(avgYaw, avgDist, true, true);
+    } else if (hasLeft) {
+      // only left tag
+      Transform3d transform = leftTarget.getBestCameraToTarget();
+      double dist = Math.hypot(transform.getX(), transform.getY());
+      return new DualTagResult(leftTarget.getYaw(), dist, true, false);
+    } else if (hasRight) {
+      // only right tag
+      Transform3d transform = rightTarget.getBestCameraToTarget();
+      double dist = Math.hypot(transform.getX(), transform.getY());
+      return new DualTagResult(rightTarget.getYaw(), dist, false, true);
+    }
+
+    return new DualTagResult(0, 0, false, false);
+  }
+
+  public static class DualTagResult {
+    public final double yaw;
+    public final double distance;
+    public final boolean hasLeftTag;
+    public final boolean hasRightTag;
+
+    public DualTagResult(double yaw, double distance, boolean hasLeft, boolean hasRight) {
+      this.yaw = yaw;
+      this.distance = distance;
+      this.hasLeftTag = hasLeft;
+      this.hasRightTag = hasRight;
+    }
+
+    public boolean hasAnyTag() {
+      return hasLeftTag || hasRightTag;
+    }
+
+    public boolean hasBothTags() {
+      return hasLeftTag && hasRightTag;
+    }
   }
 
   public Optional<Pose3d> getTagPose(int tagId) {

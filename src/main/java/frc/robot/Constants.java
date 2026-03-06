@@ -79,6 +79,8 @@ public final class Constants {
     public static final double kShooterLaunchPower = 0.6;
     public static final double kLaunchPower = 0.85;
     public static final double kShooterPukePower = -0.8;
+    public static final double kShooterTargetRPM = 4000.0;
+    public static final double kShooterSpeedTolerance = 200.0;
 
     //Intake
 
@@ -99,18 +101,18 @@ public final class Constants {
 
     //camera 0 - front left
 
-    public static final double kCamera0X = 0.2;  // meters forward
-    public static final double kCamera0Y = 0.15;  // meters left
-    public static final double kCamera0Z = 0.2;  // meters up
+    public static final double kCamera0X = -0.12;  // 4.6" behind center
+    public static final double kCamera0Y = 0.34;   // 13.4" left of center
+    public static final double kCamera0Z = 0.2;    // meters up
     public static final double kCamera0Roll = 0.0;
     public static final double kCamera0Pitch = -0.4;
-    public static final double kCamera0Yaw = 0.0; 
+    public static final double kCamera0Yaw = 0.0;
 
     //camera 1 - front right
 
-    public static final double kCamera1X = 0.2;  // meters forward
-    public static final double kCamera1Y = -0.15;  // meters right
-    public static final double kCamera1Z = 0.2; // meters up
+    public static final double kCamera1X = -0.12;  // 4.6" behind center
+    public static final double kCamera1Y = -0.35;  // 13.6" right of center
+    public static final double kCamera1Z = 0.2;    // meters up
     public static final double kCamera1Roll = 0.0;
     public static final double kCamera1Pitch = -0.4;
     public static final double kCamera1Yaw = 0.0;  
@@ -134,15 +136,26 @@ public final class Constants {
     public static final double kAlignRotationTolerance = 2.5;
 
     //distance
-    public static final double kAlignDistanceP = 2.0;
+    public static final double kAlignDistanceP = 1.5;
     public static final double kAlignDistanceI = 0.0;
-    public static final double kAlignDistanceD = 0.05;
-    public static final double kShootingDistanceMeters = 2.934; // correct now probably :D
+    public static final double kAlignDistanceD = 0.02;
+    public static final double kShootingDistanceMeters = 2.75; // correct now probably :D
     public static final double kDistanceToleranceMeters = 0.05;
 
-    //tags
-    public static final int kRedHubTagId = 10;
-    public static final int kBlueHubTagId = 26;
+    //hub tags
+    public static final int kRedHubTagLeft = 9;
+    public static final int kRedHubTagRight = 10;
+    public static final int kBlueHubTagLeft = 25;
+    public static final int kBlueHubTagRight = 26;
+
+    //climb/tower tags
+    public static final int kRedClimbTagLeft = 15;
+    public static final int kRedClimbTagRight = 16;
+    public static final int kBlueClimbTagLeft = 31;
+    public static final int kBlueClimbTagRight = 32;
+
+    //climb distance
+    public static final double kClimbDistanceMeters = 0.6; // ~2 feet
   }
 
   private Constants() {}

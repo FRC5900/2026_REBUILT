@@ -37,6 +37,6 @@ public class SpinUp extends Command {
 
   @Override
   public boolean isFinished() {
-    return false;
+    return m_shooter.isAtSpeed();
   }
 }

@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
+import frc.robot.commands.AlignToClimb;
 import frc.robot.commands.AlignToHub;
 import frc.robot.commands.ClimbDown;
 import frc.robot.commands.ClimbUp;
@@ -109,8 +110,8 @@ m_drive.setDefaultCommand(
 
   private void configureButtonBindings() {
     // Operator controls
-    m_operatorController.leftBumper() // Left Bumper, Intake
-        .whileTrue(new Intake(m_intake, m_shooter));
+    m_operatorController.leftBumper() // Left Bumper, Intake (toggle)
+        .toggleOnTrue(new Intake(m_intake, m_shooter));
 
     m_operatorController.rightBumper() // Right Bumper, Launch
         .whileTrue(new LaunchSequence(m_shooter, m_intake));
@@ -127,6 +128,9 @@ m_drive.setDefaultCommand(
 
     m_driverController.a() // A Button, Align to Hub
         .whileTrue(new AlignToHub(m_drive, m_vision));
+
+    m_driverController.b() // B Button, Align to Climb
+        .whileTrue(new AlignToClimb(m_drive, m_vision));
 
     // Default commands
     m_shooter.setDefaultCommand(m_shooter.run(() -> m_shooter.stop()));

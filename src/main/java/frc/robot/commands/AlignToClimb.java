@@ -12,15 +12,15 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.VisionSubsystem.DualTagResult;
 
-public class AlignToHub extends Command {
+public class AlignToClimb extends Command {
   private final DriveSubsystem m_drive;
   private final VisionSubsystem m_vision;
   private final PIDController m_rotationController;
   private final PIDController m_distanceController;
-  private final SlewRateLimiter m_forwardLimiter = new SlewRateLimiter(2.5);
-  private final SlewRateLimiter m_rotationLimiter = new SlewRateLimiter(2.5);
+  private final SlewRateLimiter m_forwardLimiter = new SlewRateLimiter(2.0);
+  private final SlewRateLimiter m_rotationLimiter = new SlewRateLimiter(2.0);
 
-  public AlignToHub(DriveSubsystem drive, VisionSubsystem vision) {
+  public AlignToClimb(DriveSubsystem drive, VisionSubsystem vision) {
     m_drive = drive;
     m_vision = vision;
 
@@ -36,7 +36,7 @@ public class AlignToHub extends Command {
         VisionConstants.kAlignDistanceI,
         VisionConstants.kAlignDistanceD);
     m_distanceController.setTolerance(VisionConstants.kDistanceToleranceMeters);
-    m_distanceController.setSetpoint(VisionConstants.kShootingDistanceMeters);
+    m_distanceController.setSetpoint(VisionConstants.kClimbDistanceMeters);
 
     addRequirements(drive);
   }
@@ -44,17 +44,17 @@ public class AlignToHub extends Command {
   private int[] getTargetTagIds() {
     var alliance = DriverStation.getAlliance();
     if (alliance.isPresent() && alliance.get() == Alliance.Blue) {
-      SmartDashboard.putString("Hub/Alliance", "Blue");
-      return new int[] { VisionConstants.kBlueHubTagLeft, VisionConstants.kBlueHubTagRight };
+      SmartDashboard.putString("Climb/Alliance", "Blue");
+      return new int[] { VisionConstants.kBlueClimbTagLeft, VisionConstants.kBlueClimbTagRight };
     } else {
-      SmartDashboard.putString("Hub/Alliance", alliance.isPresent() ? "Red" : "NOT SET - using Red");
-      return new int[] { VisionConstants.kRedHubTagLeft, VisionConstants.kRedHubTagRight };
+      SmartDashboard.putString("Climb/Alliance", alliance.isPresent() ? "Red" : "NOT SET - using Red");
+      return new int[] { VisionConstants.kRedClimbTagLeft, VisionConstants.kRedClimbTagRight };
     }
   }
 
   @Override
   public void initialize() {
-    SmartDashboard.putBoolean("Hub/CommandRunning", true);
+    SmartDashboard.putBoolean("Climb/CommandRunning", true);
     m_rotationController.reset();
     m_distanceController.reset();
     m_forwardLimiter.reset(0);
@@ -66,52 +66,51 @@ public class AlignToHub extends Command {
     int[] tagIds = getTargetTagIds();
     DualTagResult result = m_vision.getDualTagData(tagIds[0], tagIds[1]);
 
-    SmartDashboard.putNumber("Hub/LeftTag", tagIds[0]);
-    SmartDashboard.putNumber("Hub/RightTag", tagIds[1]);
-    SmartDashboard.putBoolean("Hub/HasLeftTag", result.hasLeftTag);
-    SmartDashboard.putBoolean("Hub/HasRightTag", result.hasRightTag);
-    SmartDashboard.putBoolean("Hub/HasBothTags", result.hasBothTags());
+    SmartDashboard.putNumber("Climb/LeftTag", tagIds[0]);
+    SmartDashboard.putNumber("Climb/RightTag", tagIds[1]);
+    SmartDashboard.putBoolean("Climb/HasLeftTag", result.hasLeftTag);
+    SmartDashboard.putBoolean("Climb/HasRightTag", result.hasRightTag);
+    SmartDashboard.putBoolean("Climb/HasBothTags", result.hasBothTags());
 
     if (result.hasAnyTag()) {
       double yaw = result.yaw;
       double distanceMeters = result.distance;
 
-      // If only one tag visible, apply camera offset compensation
+      // camera offset for singular tag
       if (!result.hasBothTags()) {
         double cameraYOffset = m_vision.getLastTargetCameraYOffset();
         double offsetCorrection = Math.toDegrees(Math.atan2(cameraYOffset, distanceMeters));
         yaw = yaw - offsetCorrection;
-        SmartDashboard.putNumber("Hub/CameraOffset", cameraYOffset);
+        SmartDashboard.putNumber("Climb/CameraOffset", cameraYOffset);
       } else {
-        // Both tags visible - midpoint calculation already accounts for centering
-        SmartDashboard.putNumber("Hub/CameraOffset", 0);
+        SmartDashboard.putNumber("Climb/CameraOffset", 0);
       }
 
       // Center on tag(s)
       double rotationOutput = -m_rotationController.calculate(yaw);
-      rotationOutput = MathUtil.clamp(rotationOutput, -0.5, 0.5);
+      rotationOutput = MathUtil.clamp(rotationOutput, -0.4, 0.4);
       rotationOutput = m_rotationLimiter.calculate(rotationOutput);
 
       // Calculate forward distance
       double forwardOutput = m_distanceController.calculate(distanceMeters);
-      forwardOutput = MathUtil.clamp(forwardOutput, -0.5, 0.5);
+      forwardOutput = MathUtil.clamp(forwardOutput, -0.4, 0.4);
       forwardOutput = m_forwardLimiter.calculate(forwardOutput);
 
       m_drive.arcadeDrive(forwardOutput, rotationOutput);
 
-      // SmartDashboard
-      SmartDashboard.putNumber("Hub/Distance", distanceMeters);
-      SmartDashboard.putNumber("Hub/Yaw", yaw);
-      SmartDashboard.putNumber("Hub/ForwardOutput", forwardOutput);
-      SmartDashboard.putNumber("Hub/RotationOutput", rotationOutput);
-      SmartDashboard.putBoolean("Hub/Aligned", isAligned());
+      // SMARTYDASHBOARDY
+      SmartDashboard.putNumber("Climb/Distance", distanceMeters);
+      SmartDashboard.putNumber("Climb/Yaw", yaw);
+      SmartDashboard.putNumber("Climb/ForwardOutput", forwardOutput);
+      SmartDashboard.putNumber("Climb/RotationOutput", rotationOutput);
+      SmartDashboard.putBoolean("Climb/Aligned", isAligned());
     } else {
       m_drive.arcadeDrive(0, 0);
-      SmartDashboard.putBoolean("Hub/Aligned", false);
-      SmartDashboard.putNumber("Hub/Distance", -1);
-      SmartDashboard.putNumber("Hub/Yaw", 0);
-      SmartDashboard.putNumber("Hub/ForwardOutput", 0);
-      SmartDashboard.putNumber("Hub/RotationOutput", 0);
+      SmartDashboard.putBoolean("Climb/Aligned", false);
+      SmartDashboard.putNumber("Climb/Distance", -1);
+      SmartDashboard.putNumber("Climb/Yaw", 0);
+      SmartDashboard.putNumber("Climb/ForwardOutput", 0);
+      SmartDashboard.putNumber("Climb/RotationOutput", 0);
     }
   }
 
@@ -122,7 +121,7 @@ public class AlignToHub extends Command {
   @Override
   public void end(boolean interrupted) {
     m_drive.arcadeDrive(0, 0);
-    SmartDashboard.putBoolean("Hub/CommandRunning", false);
+    SmartDashboard.putBoolean("Climb/CommandRunning", false);
   }
 
   @Override
