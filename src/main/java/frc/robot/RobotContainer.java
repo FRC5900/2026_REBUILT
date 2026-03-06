@@ -7,8 +7,10 @@ package frc.robot;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import edu.wpi.first.cameraserver.CameraServer;
 
@@ -18,6 +20,10 @@ import frc.robot.commands.ClimbDown;
 import frc.robot.commands.ClimbUp;
 import frc.robot.commands.Intake;
 import frc.robot.commands.LaunchSequence;
+import frc.robot.commands.ClimbToDrivePosition;
+import frc.robot.commands.ClimbToStartingConfig;
+import frc.robot.commands.ClimbToClimbPosition;
+import frc.robot.commands.TurnBy180;
 import frc.robot.commands.Puke;
 
 import frc.robot.subsystems.ClimbSubsystem;
@@ -40,6 +46,8 @@ public class RobotContainer {
       new SlewRateLimiter(Constants.DriveConstants.kTurnSlewRate);
   private final SlewRateLimiter m_forwardLimiter = 
       new SlewRateLimiter(Constants.DriveConstants.kForwardSlewRate);
+
+  private boolean m_intakeEnabled = false;
 
   private final DriveSubsystem m_drive = new DriveSubsystem();
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
@@ -117,10 +125,12 @@ m_drive.setDefaultCommand(
   private void configureButtonBindings() {
     // Operator controls
     m_operatorController.leftBumper() // Left Bumper, Intake (toggle)
-        .toggleOnTrue(new Intake(m_intake, m_shooter));
+        .onTrue(Commands.runOnce(() -> m_intakeEnabled = !m_intakeEnabled));
+    new Trigger(() -> m_intakeEnabled).whileTrue(new Intake(m_intake, m_shooter));
 
     m_operatorController.rightBumper() // Right Bumper, Launch
-        .whileTrue(new LaunchSequence(m_shooter, m_intake));
+        .whileTrue(new LaunchSequence(m_shooter, m_intake))
+        .onFalse(Commands.runOnce(() -> { if (m_intakeEnabled) new Intake(m_intake, m_shooter).schedule(); }));
 
     m_operatorController.a() // A, Puke
         .whileTrue(new Puke(m_shooter));
@@ -138,8 +148,20 @@ m_drive.setDefaultCommand(
     m_driverController.a() // A Button, Align to Hub
         .whileTrue(new AlignToHub(m_drive, m_vision));
 
+    m_driverController.x() // X Button, Flip robot 180
+        .onTrue(new TurnBy180(m_drive));
+
     m_driverController.b() // B Button, Align to Climb
         .whileTrue(new AlignToClimb(m_drive, m_vision));
+
+    m_driverController.y() // Y Button, Climb to Drive Position
+        .onTrue(new ClimbToDrivePosition(m_climber));
+
+    m_driverController.back() // Back Button, Climb to Starting Config
+        .onTrue(new ClimbToStartingConfig(m_climber));
+
+    m_driverController.start() // Start Button, Climb to Climb Position
+        .onTrue(new ClimbToClimbPosition(m_climber));
 
     // Default commands
     m_shooter.setDefaultCommand(m_shooter.run(() -> m_shooter.stop()));
@@ -148,6 +170,6 @@ m_drive.setDefaultCommand(
   }
 
   public Command getAutonomousCommand() {
-  return m_autoChooser.getSelected();
+    return m_autoChooser.getSelected().deadlineWith(new ClimbToDrivePosition(m_climber));
   }
 }

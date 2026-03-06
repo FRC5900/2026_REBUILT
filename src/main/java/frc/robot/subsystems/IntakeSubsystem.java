@@ -13,6 +13,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class IntakeSubsystem extends SubsystemBase {
   private final SparkMax m_intake;
@@ -29,6 +30,15 @@ public class IntakeSubsystem extends SubsystemBase {
   public void setIntake(double power) {
     m_intake.set(power);
   }
+
+  public double getIntakeRpm() {
+    return m_intake.getEncoder().getVelocity();
+  }
+
+  @Override
+  public void periodic() {
+    SmartDashboard.putNumber("Intake RPM", getIntakeRpm());
+}
 
   public void stop() {
     m_intake.set(0);

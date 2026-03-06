@@ -7,14 +7,18 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimbConstants;
 
 public class ClimbSubsystem extends SubsystemBase {
   private final SparkMax m_climbMotor;
+  private final DutyCycleEncoder m_encoder;
 
   public ClimbSubsystem() {
     m_climbMotor = new SparkMax(ClimbConstants.kClimbMotorCanId, MotorType.kBrushless);
+    m_encoder = new DutyCycleEncoder(ClimbConstants.kEncoderDIOPort);
 
     SparkMaxConfig climbConfig = new SparkMaxConfig();
     climbConfig.smartCurrentLimit(ClimbConstants.kClimbMotorLimit);
@@ -32,5 +36,14 @@ public class ClimbSubsystem extends SubsystemBase {
 
   public void stopClimb() {
     m_climbMotor.set(0);
+  }
+
+  public double getPosition() {
+    return m_encoder.get();
+  }
+
+  @Override
+  public void periodic() {
+    SmartDashboard.putNumber("Climb Position", getPosition());
   }
 }

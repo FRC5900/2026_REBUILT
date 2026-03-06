@@ -9,7 +9,7 @@ import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import edu.wpi.first.wpilibj.DriverStation;
 
 
@@ -213,9 +213,12 @@ public ChassisSpeeds getRobotRelativeSpeeds() {
 
 
     private Rotation2d getHeadingRotation2d() {
-    
     return Rotation2d.fromDegrees(-m_gyro.getYaw());
     }
+
+  public double getHeading() {
+    return -m_gyro.getYaw();
+  }
 
 
 
