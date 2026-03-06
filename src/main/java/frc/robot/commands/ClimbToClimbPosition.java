@@ -15,12 +15,8 @@ public class ClimbToClimbPosition extends Command {
 
   @Override
   public void initialize() {
-    double current = m_climb.getPosition();
-    if (current > ClimbConstants.kClimbPosition) {
-      m_speed = ClimbConstants.kClimbMotorDownPower;
-    } else {
-      m_speed = ClimbConstants.kClimbMotorUpPower;
-    }
+    double dir = m_climb.getDirectionTo(ClimbConstants.kClimbPosition);
+    m_speed = dir > 0 ? ClimbConstants.kClimbMotorUpPower : ClimbConstants.kClimbMotorDownPower;
     m_climb.setClimb(m_speed);
   }
 
@@ -36,6 +32,6 @@ public class ClimbToClimbPosition extends Command {
 
   @Override
   public boolean isFinished() {
-    return Math.abs(m_climb.getPosition() - ClimbConstants.kClimbPosition) <= ClimbConstants.kPositionTolerance;
+    return m_climb.isAtPosition(ClimbConstants.kClimbPosition);
   }
 }

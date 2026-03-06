@@ -12,6 +12,7 @@ import frc.robot.subsystems.DriveSubsystem;
 public class TurnBy180 extends Command {
   private final DriveSubsystem m_drive;
   private double m_targetAngle;
+  private double m_turnDirection; // set once in initialize, never changes
 
   public TurnBy180(DriveSubsystem drive) {
     m_drive = drive;
@@ -20,22 +21,23 @@ public class TurnBy180 extends Command {
 
   @Override
   public void initialize() {
-    m_targetAngle = m_drive.getHeading() + 180.0;
+    double current = m_drive.getHeading();
+    m_targetAngle = current + 180.0;
+    // Normalize target into (-180, 180] to match gyro output range
+    if (m_targetAngle > 180)  m_targetAngle -= 360;
+    if (m_targetAngle < -180) m_targetAngle += 360;
+
+    // Pick direction once and never change it — avoids the ±180 oscillation where
+    // the P controller reverses every loop because error flips between +180 and -180.
+    double diff = m_targetAngle - current;
+    if (diff > 180)  diff -= 360;
+    if (diff < -180) diff += 360;
+    m_turnDirection = diff >= 0 ? 1.0 : -1.0;
   }
 
   @Override
   public void execute() {
-    double error = m_targetAngle - m_drive.getHeading();
-    // Normalize error to [-180, 180]
-    while (error > 180)  error -= 360;
-    while (error < -180) error += 360;
-
-    double turnSpeed = MathUtil.clamp(
-        DriveConstants.kTurnP * error,
-        -DriveConstants.kTurnMaxSpeed,
-        DriveConstants.kTurnMaxSpeed);
-
-    m_drive.arcadeDrive(0, -turnSpeed);
+    m_drive.arcadeDrive(0, -DriveConstants.kTurnMaxSpeed * m_turnDirection);
   }
 
   @Override
@@ -46,8 +48,8 @@ public class TurnBy180 extends Command {
   @Override
   public boolean isFinished() {
     double error = m_targetAngle - m_drive.getHeading();
-    while (error > 180)  error -= 360;
-    while (error < -180) error += 360;
-    return Math.abs(error) < DriveConstants.kTurnTolerance;
+    if (error > 180)  error -= 360;
+    if (error < -180) error += 360;
+    return Math.abs(error) <= DriveConstants.kTurnTolerance;
   }
 }

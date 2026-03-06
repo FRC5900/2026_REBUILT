@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 import com.revrobotics.RelativeEncoder;
@@ -151,6 +152,8 @@ private double rightVelocityMetersPerSec() {
     getHeadingRotation2d(),
     leftDistanceMeters(),
     rightDistanceMeters());
+    SmartDashboard.putNumber("Gyro Heading", getHeading());
+    SmartDashboard.putNumber("Gyro Raw Yaw", m_gyro.getYaw());
   }
 
 

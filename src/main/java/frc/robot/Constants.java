@@ -23,7 +23,7 @@ public final class Constants {
     public static final int kRearRightCanId = 3;
 
     public static final double kDeadband = 0.08;
-    public static final double kMaxOutput = 1; // speed i lowered it for you lol
+    public static final double kMaxOutput = -1; // speed i lowered it for you lol
     public static final double kTurnSlewRate = 3.5; // units per second
     public static final double kForwardSlewRate = 3.5; // units per second
 
@@ -31,12 +31,12 @@ public final class Constants {
     //Pathplanner stuff
     public static final double kTrackWidthMeters = 0.5906;
     public static final double kWheelDiameterMeters = 0.1524; // 6" wheels = 0.1524m
-    public static final double kGearRatio = 10.71; //motor rotations per wheel rotation     WE NEED TO FIGURE THIS OUT :D -- Justin
-    public static final double kMaxSpeedMetersPerSec = 1;
+    public static final double kGearRatio = 8.46; //motor rotations per wheel rotation     WE NEED TO FIGURE THIS OUT :D -- Justin
+    public static final double kMaxSpeedMetersPerSec = -1;
 
     //Turn to angle (180 flip)
     public static final double kTurnP = 0.040;           // TODO: tune
-    public static final double kTurnTolerance = 50;      // degrees window
+    public static final double kTurnTolerance = 5;      // degrees window
     public static final double kTurnMaxSpeed = 0.5;      // max turn output
   }
 
@@ -66,12 +66,25 @@ public final class Constants {
     //Through Bore Encoder DIO port (RoboRIO)
     public static final int kEncoderDIOPort = 3;
 
-    //Climb Positions (encoder units) - TODO: tune all values
+    // Encoder offset: shifts the 0-crossing out of the working range.
+    // The encoder wraps 0→1, so if 0 falls within the movement range the
+    // position comparisons break. Set this so all three positions below
+    // end up on the same side of 0 (no wrap between them).
+    //
+    // How to tune:
+    //   1. Deploy with kEncoderOffset = 0.
+    //   2. Move the climb to each position and note "Climb Raw" on SmartDashboard.
+    //   3. Pick an offset so (raw + offset) % 1.0 is monotonically ordered for
+    //      all three positions with no 0-crossing between them.
+    //   4. Re-measure and update the three position constants below.
+    public static final double kEncoderOffset = 0.5;
+
+    //Climb Positions (encoder units) - re-measure after tuning kEncoderOffset
     public static final double kStartingConfig = .132;      // starting position before match
     public static final double kDrivePosition = 0.64;       // retracted position for driving around
     public static final double kClimbPosition = 0.426;       // extended position for climbing
 
-    public static final double kPositionTolerance = 0.015; 
+    public static final double kPositionTolerance = 0.015;
   }
 
   public static final class ShooterConstants {
