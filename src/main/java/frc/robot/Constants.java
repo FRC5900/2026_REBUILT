@@ -93,9 +93,10 @@ public final class Constants {
   }
 
   public static final class VisionConstants {
-    
+
     public static final String kCamera0Name = "BW_1";
     public static final String kCamera1Name = "BW_2";
+    public static final String kCamera2Name = "CL_1";
 
     //robot transforms to camera (x forward, y left, z up)
 
@@ -115,7 +116,16 @@ public final class Constants {
     public static final double kCamera1Z = 0.2;    // meters up
     public static final double kCamera1Roll = 0.0;
     public static final double kCamera1Pitch = -0.4;
-    public static final double kCamera1Yaw = 0.0;  
+    public static final double kCamera1Yaw = 0.0;
+
+    //camera 2 - center
+
+    public static final double kCamera2X = 0.051;  // 2" infront of center
+    public static final double kCamera2Y = -0.146; // 5.75" right of center
+    public static final double kCamera2Z = 0.2;    // meters up
+    public static final double kCamera2Roll = 0.0;
+    public static final double kCamera2Pitch = -0.4;
+    public static final double kCamera2Yaw = 0.0;  
 
     //filtering thresholds
     public static final double kMaxAmbiguity = 0.3;
@@ -139,7 +149,7 @@ public final class Constants {
     public static final double kAlignDistanceP = 1.5;
     public static final double kAlignDistanceI = 0.0;
     public static final double kAlignDistanceD = 0.02;
-    public static final double kShootingDistanceMeters = 2.75; // correct now probably :D
+    public static final double kShootingDistanceMeters = 1.5; // closer for better accuracy
     public static final double kDistanceToleranceMeters = 0.05;
 
     //hub tags

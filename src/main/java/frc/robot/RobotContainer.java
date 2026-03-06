@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
+import edu.wpi.first.cameraserver.CameraServer;
+
 import frc.robot.commands.AlignToClimb;
 import frc.robot.commands.AlignToHub;
 import frc.robot.commands.ClimbDown;
@@ -48,6 +50,10 @@ public class RobotContainer {
 
    private SendableChooser<Command> m_autoChooser;
   public RobotContainer() {
+
+    // Start driver camera
+    CameraServer.startAutomaticCapture();
+
     configureButtonBindings();
 
     //PATHPLANNER \//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
@@ -118,6 +124,9 @@ m_drive.setDefaultCommand(
 
     m_operatorController.a() // A, Puke
         .whileTrue(new Puke(m_shooter));
+
+    m_operatorController.y() // Y, 100% Full Potential launch
+        .whileTrue(new RunCommand(() -> m_shooter.setShooterRoller(1.0), m_shooter));
 
     // Driver controls
     m_driverController.povDown() // D-Pad Down, Climb Down
