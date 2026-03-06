@@ -35,8 +35,8 @@ public final class Constants {
     public static final double kMaxSpeedMetersPerSec = 1;
 
     //Turn to angle (180 flip)
-    public static final double kTurnP = 0.012;           // TODO: tune
-    public static final double kTurnTolerance = 2.0;     // degrees Window
+    public static final double kTurnP = 0.040;           // TODO: tune
+    public static final double kTurnTolerance = 100 ;     // degrees Window
     public static final double kTurnMaxSpeed = 0.5;      // max turn output
   }
 
@@ -67,11 +67,11 @@ public final class Constants {
     public static final int kEncoderDIOPort = 3;
 
     //Climb Positions (encoder units) - TODO: tune all values
-    public static final double kStartingConfig = 0.0;      // starting position before match
-    public static final double kDrivePosition = 0.0;       // retracted position for driving around
+    public static final double kStartingConfig = .132;      // starting position before match
+    public static final double kDrivePosition = 0.811;       // retracted position for driving around
     public static final double kClimbPosition = 0.0;       // extended position for climbing
 
-    public static final double kPositionTolerance = 0.035;  // encoder units - TODO: tune
+    public static final double kPositionTolerance = 0.035; 
   }
 
   public static final class ShooterConstants {
