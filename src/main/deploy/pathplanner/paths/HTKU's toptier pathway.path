@@ -3,41 +3,57 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.014988151658768,
-        "y": 6.861315165876777
+        "x": 2.1015402843601896,
+        "y": 3.787831753554501
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.014988151658767,
-        "y": 6.861315165876777
+        "x": 2.8268997214046405,
+        "y": 4.810183849782982
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.25925355450237,
-        "y": 4.08873222748815
+        "x": 2.606623222748815,
+        "y": 5.313827014218009
       },
       "prevControl": {
-        "x": 7.25925355450237,
-        "y": 4.08873222748815
+        "x": 2.3567198401510216,
+        "y": 5.320776788759739
       },
       "nextControl": {
-        "x": 9.25925355450237,
-        "y": 4.08873222748815
+        "x": 3.171130941843706,
+        "y": 5.2981281415817385
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.8961966824644545,
-        "y": 5.636220379146919
+        "x": 7.721931279620854,
+        "y": 5.174123222748815
       },
       "prevControl": {
-        "x": 6.5777251184834125,
-        "y": 4.862476303317535
+        "x": 6.875338805756492,
+        "y": 6.079408061851776
+      },
+      "nextControl": {
+        "x": 8.28720450413064,
+        "y": 4.569660868195043
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.721931279620854,
+        "y": 2.057654028436018
+      },
+      "prevControl": {
+        "x": 8.014975896227302,
+        "y": 3.5298572631754057
       },
       "nextControl": null,
       "isLocked": false,
@@ -47,14 +63,7 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "",
-      "waypointRelativePos": 0,
-      "endWaypointRelativePos": null,
-      "command": null
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
