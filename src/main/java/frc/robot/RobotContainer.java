@@ -170,6 +170,6 @@ m_drive.setDefaultCommand(
   }
 
   public Command getAutonomousCommand() {
-    return m_autoChooser.getSelected().deadlineWith(/*new ClimbToDrivePosition(m_climber)*/);
+    return m_autoChooser.getSelected().deadlineWith(new ClimbToDrivePosition(m_climber));
   }
 }

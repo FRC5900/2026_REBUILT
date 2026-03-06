@@ -35,7 +35,7 @@ public class TurnBy180 extends Command {
         -DriveConstants.kTurnMaxSpeed,
         DriveConstants.kTurnMaxSpeed);
 
-    m_drive.arcadeDrive(0, turnSpeed);
+    m_drive.arcadeDrive(0, -turnSpeed);
   }
 
   @Override

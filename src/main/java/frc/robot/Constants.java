@@ -23,9 +23,9 @@ public final class Constants {
     public static final int kRearRightCanId = 3;
 
     public static final double kDeadband = 0.08;
-    public static final double kMaxOutput = 1; // speed i lowered it for you lol
-    public static final double kTurnSlewRate = 5.0; // units per second
-    public static final double kForwardSlewRate = 5.0; // units per second
+    public static final double kMaxOutput = -1; // speed i lowered it for you lol
+    public static final double kTurnSlewRate = 3.5; // units per second
+    public static final double kForwardSlewRate = 3.5; // units per second
 
 
     //Pathplanner stuff
@@ -36,7 +36,7 @@ public final class Constants {
 
     //Turn to angle (180 flip)
     public static final double kTurnP = 0.040;           // TODO: tune
-    public static final double kTurnTolerance = 100 ;     // degrees Window
+    public static final double kTurnTolerance = 3.0;      // degrees window
     public static final double kTurnMaxSpeed = 0.5;      // max turn output
   }
 
@@ -60,8 +60,8 @@ public final class Constants {
     public static final int kClimbMotorLimit = 40;
 
     //Climb Speeds
-    public static final double kClimbMotorDownPower = 0.7;
-    public static final double kClimbMotorUpPower = -0.7;
+    public static final double kClimbMotorDownPower = -0.7;
+    public static final double kClimbMotorUpPower = 0.7;
 
     //Through Bore Encoder DIO port (RoboRIO)
     public static final int kEncoderDIOPort = 3;
