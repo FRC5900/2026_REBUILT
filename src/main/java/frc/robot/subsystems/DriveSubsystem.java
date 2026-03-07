@@ -75,10 +75,11 @@ private final DifferentialDriveOdometry m_odometry;
               m_rearLeft.set(left);
             },
             right -> {
-              
+
               m_frontRight.set(-right);
               m_rearRight.set(-right);
             });
+        m_drive.setSafetyEnabled(false);
 
             m_gyro.reset();
 
@@ -130,7 +131,7 @@ m_odometry =
   }
 
 private double rightDistanceMeters() {
-  return m_rightEncoder.getPosition()
+  return -m_rightEncoder.getPosition()
       * (Math.PI * Constants.DriveConstants.kWheelDiameterMeters)
       / Constants.DriveConstants.kGearRatio;
 }
@@ -142,7 +143,7 @@ private double leftVelocityMetersPerSec() {
 }
 
 private double rightVelocityMetersPerSec() {
-  return (m_rightEncoder.getVelocity() / 60.0)
+  return -(m_rightEncoder.getVelocity() / 60.0)
       * (Math.PI * Constants.DriveConstants.kWheelDiameterMeters)
       / Constants.DriveConstants.kGearRatio;
 }
