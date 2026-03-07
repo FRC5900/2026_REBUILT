@@ -15,8 +15,7 @@ public class ClimbToStartingConfig extends Command {
 
   @Override
   public void initialize() {
-    double dir = m_climb.getDirectionTo(ClimbConstants.kStartingConfig);
-    m_speed = dir > 0 ? ClimbConstants.kClimbMotorUpPower : ClimbConstants.kClimbMotorDownPower;
+    m_speed = m_climb.getPosition() < ClimbConstants.kStartingConfig ? ClimbConstants.kClimbMotorUpPower : ClimbConstants.kClimbMotorDownPower;
     m_climb.setClimb(m_speed);
   }
 
@@ -32,6 +31,6 @@ public class ClimbToStartingConfig extends Command {
 
   @Override
   public boolean isFinished() {
-    return m_climb.isAtPosition(ClimbConstants.kStartingConfig);
+    return Math.abs(m_climb.getPosition() - ClimbConstants.kStartingConfig) <= ClimbConstants.kPositionTolerance;
   }
 }

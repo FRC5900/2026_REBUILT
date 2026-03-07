@@ -15,8 +15,7 @@ public class ClimbToDrivePosition extends Command {
 
   @Override
   public void initialize() {
-    double dir = m_climb.getDirectionTo(ClimbConstants.kDrivePosition);
-    m_speed = dir > 0 ? ClimbConstants.kClimbMotorUpPower : ClimbConstants.kClimbMotorDownPower;
+    m_speed = m_climb.getPosition() < ClimbConstants.kDrivePosition ? ClimbConstants.kClimbMotorUpPower : ClimbConstants.kClimbMotorDownPower;
     m_climb.setClimb(m_speed);
   }
 
@@ -32,6 +31,6 @@ public class ClimbToDrivePosition extends Command {
 
   @Override
   public boolean isFinished() {
-    return m_climb.isAtPosition(ClimbConstants.kDrivePosition);
+    return Math.abs(m_climb.getPosition() - ClimbConstants.kDrivePosition) <= ClimbConstants.kPositionTolerance;
   }
 }
