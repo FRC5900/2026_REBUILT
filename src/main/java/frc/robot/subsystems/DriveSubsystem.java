@@ -97,7 +97,9 @@ m_odometry =
             RobotConfig config;
             try {
             config = RobotConfig.fromGUISettings();
+            System.out.println("PathPlanner: RobotConfig loaded OK");
             } catch (Exception e) {
+            System.out.println("PathPlanner: RobotConfig FAILED - " + e.getMessage());
             e.printStackTrace();
             config = null;
             }
@@ -116,6 +118,7 @@ m_odometry =
                 && alliance.get() == DriverStation.Alliance.Red;
             },
             this);
+            System.out.println("PathPlanner: AutoBuilder configured OK");
     }
   }
 
