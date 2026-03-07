@@ -5,21 +5,34 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "New Path"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "ClimbDown"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "New Path"
+                }
+              }
+            ]
           }
         },
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "Launch"
           }
         },
         {
-          "type": "sequential",
+          "type": "named",
           "data": {
-            "commands": []
+            "name": "Climb"
           }
         }
       ]

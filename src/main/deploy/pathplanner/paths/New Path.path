@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.6490284360189573,
-        "y": 3.787831753554501
+        "x": 3.4878317535545023,
+        "y": 4.142464454976302
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.102995146629291,
-        "y": 3.6216634104243157
+        "x": 2.896777251184834,
+        "y": 4.131718009478672
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.4997393364928906,
-        "y": 3.1537914691943114
+        "x": 1.5319786729857814,
+        "y": 4.142464454976302
       },
       "prevControl": {
-        "x": 1.2597343786186868,
-        "y": 3.083808469860176
+        "x": 1.7819786729857814,
+        "y": 4.142464454976302
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,7 +31,26 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Launch",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "ClimbDown",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "Climb",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,

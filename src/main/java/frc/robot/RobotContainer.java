@@ -76,11 +76,11 @@ public class RobotContainer {
     "Launch",
     new LaunchSequence(m_shooter, m_intake));
     NamedCommands.registerCommand(
-    "Climb Up",
-    new ClimbUp(m_climber));
+    "ClimbDown",
+    new ClimbToDrivePosition(m_climber));
     NamedCommands.registerCommand(
-    "Climb Down",
-    new ClimbDown(m_climber));
+    "Climb",
+    new ClimbToClimbPosition(m_climber));
 
     m_drive = new DriveSubsystem();
 
@@ -168,6 +168,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return m_autoChooser.getSelected().deadlineWith(new ClimbToDrivePosition(m_climber));
+    return m_autoChooser.getSelected()/* .deadlineWith(new ClimbToDrivePosition(m_climber))*/;
   }
 }
