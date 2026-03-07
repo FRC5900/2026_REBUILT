@@ -113,11 +113,7 @@ m_odometry =
             (speeds, ff) -> driveRobotRelative(speeds),
             new PPLTVController(0.02),
             config,
-            () -> {
-            var alliance = DriverStation.getAlliance();
-            return alliance.isPresent()
-                && alliance.get() == DriverStation.Alliance.Red;
-            },
+            () -> false,
             this);
             System.out.println("PathPlanner: AutoBuilder configured OK");
     }
