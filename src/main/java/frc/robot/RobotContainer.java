@@ -74,7 +74,7 @@ public class RobotContainer {
 
     NamedCommands.registerCommand(
     "Launch",
-    new LaunchSequence(m_shooter, m_intake));
+    new LaunchSequence(m_shooter, m_intake).withTimeout(3.0));
     NamedCommands.registerCommand(
     "ClimbDown",
     new ClimbToDrivePosition(m_climber));
