@@ -63,26 +63,12 @@ public final class Constants {
     public static final double kClimbMotorDownPower = -0.7;
     public static final double kClimbMotorUpPower = 0.7;
 
-    //Through Bore Encoder DIO port (RoboRIO)
-    public static final int kEncoderDIOPort = 3;
-
-    // Encoder offset: shifts the 0-crossing out of the working range.
-    // The encoder wraps 0→1, so if 0 falls within the movement range the
-    // position comparisons break. Set this so all three positions below
-    // end up on the same side of 0 (no wrap between them).
-    //
-    // How to tune:
-    //   1. Deploy with kEncoderOffset = 0.
-    //   2. Move the climb to each position and note "Climb Raw" on SmartDashboard.
-    //   3. Pick an offset so (raw + offset) % 1.0 is monotonically ordered for
-    //      all three positions with no 0-crossing between them.
-    //   4. Re-measure and update the three position constants below.
-    public static final double kEncoderOffset = 0.5;
-
-    //Climb Positions (encoder units) - re-measure after tuning kEncoderOffset
-    public static final double kStartingConfig = .132;      // starting position before match
-    public static final double kDrivePosition = 0.64;       // retracted position for driving around
-    public static final double kClimbPosition = 0.426;       // extended position for climbing
+    // Climb Positions (motor rotations from start, zeroed at match start position)
+    // TODO: re-measure all three by deploying, moving to each position, and reading
+    //       "Climb Position" from SmartDashboard.
+    public static final double kStartingConfig = 0.0;       // starting position (always zeroed here)
+    public static final double kDrivePosition = 0.0;        // TODO: measure
+    public static final double kClimbPosition = 0.0;        // TODO: measure
 
     public static final double kPositionTolerance = 0.015;
   }
