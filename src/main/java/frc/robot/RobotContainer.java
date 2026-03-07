@@ -49,7 +49,7 @@ public class RobotContainer {
 
   private boolean m_intakeEnabled = false;
 
-  private final DriveSubsystem m_drive = new DriveSubsystem();
+  private final DriveSubsystem m_drive;
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
   private final ClimbSubsystem m_climber = new ClimbSubsystem();
   private final ShooterSubsystem m_shooter = new ShooterSubsystem();
@@ -62,11 +62,8 @@ public class RobotContainer {
     // Start driver camera
     CameraServer.startAutomaticCapture();
 
-    configureButtonBindings();
-
     //PATHPLANNER \//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
-   
-
+    // Named commands MUST be registered before AutoBuilder.configure() (called in DriveSubsystem constructor)
     NamedCommands.registerCommand(
     "Intake",
     new Intake(m_intake, m_shooter));
@@ -85,15 +82,16 @@ public class RobotContainer {
     "Climb Down",
     new ClimbDown(m_climber));
 
-
-
+    m_drive = new DriveSubsystem();
 
     m_autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", m_autoChooser);
-   
+
     //PATHPLANNER /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 
-m_drive.setDefaultCommand(
+    configureButtonBindings();
+
+    m_drive.setDefaultCommand(
     new RunCommand(
         () -> {
           double forward =
