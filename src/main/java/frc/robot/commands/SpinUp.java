@@ -33,7 +33,12 @@ public class SpinUp extends Command {
   public void execute() {}
 
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    if (interrupted) {
+      m_shooter.setShooterRoller(0);
+      m_shooter.setIndexer(0);
+    }
+  }
 
   @Override
   public boolean isFinished() {
