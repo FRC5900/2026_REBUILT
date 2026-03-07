@@ -211,10 +211,7 @@ public ChassisSpeeds getRobotRelativeSpeeds() {
     leftPercent = MathUtil.clamp(leftPercent, -1.0, 1.0);
     rightPercent = MathUtil.clamp(rightPercent, -1.0, 1.0);
 
-    m_frontLeft.set(leftPercent);
-    m_rearLeft.set(leftPercent);
-    m_frontRight.set(-rightPercent);
-    m_rearRight.set(-rightPercent);
+    m_drive.tankDrive(leftPercent, rightPercent, false);
   }
 
 
