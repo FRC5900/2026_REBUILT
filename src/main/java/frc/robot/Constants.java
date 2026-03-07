@@ -24,7 +24,7 @@ public final class Constants {
 
     public static final double kDeadband = 0.08;
     public static final double kMaxOutput = -1; // speed i lowered it for you lol
-    public static final double kTurnSlewRate = 3.5; // units per second
+    public static final double kTurnSlewRate = 4.2; // units per second
     public static final double kForwardSlewRate = 3.5; // units per second
 
 
@@ -37,7 +37,7 @@ public final class Constants {
     //Turn to angle (180 flip)
     public static final double kTurnP = 0.040;           // TODO: tune
     public static final double kTurnTolerance = 5;      // degrees window
-    public static final double kTurnMaxSpeed = 0.5;      // max turn output
+    public static final double kTurnMaxSpeed = 0.5;      // max turn output    TODO: MAKE GYRO WORKKKKK
   }
 
   
@@ -63,14 +63,16 @@ public final class Constants {
     public static final double kClimbMotorDownPower = -0.7;
     public static final double kClimbMotorUpPower = 0.7;
 
-    // Climb Positions (motor rotations from start, zeroed at match start position)
-    // TODO: re-measure all three by deploying, moving to each position, and reading
-    //       "Climb Position" from SmartDashboard.
-    public static final double kStartingConfig = 0.0;       // starting position (always zeroed here)
-    public static final double kDrivePosition = 0.0;        // TODO: measure
-    public static final double kClimbPosition = 0.0;        // TODO: measure
+    //Through Bore Encoder DIO port (RoboRIO)
+    public static final int kEncoderDIOPort = 3;
 
-    public static final double kPositionTolerance = 0.015;
+
+    //Climb Positions (encoder units) - re-measure after tuning kEncoderOffset
+    public static final double kStartingConfig = 0;      // starting position before match
+    public static final double kDrivePosition = 235.5;       // retracted position for driving around
+    public static final double kClimbPosition = -157;       // extended position for climbing
+
+    public static final double kPositionTolerance = 2;
   }
 
   public static final class ShooterConstants {

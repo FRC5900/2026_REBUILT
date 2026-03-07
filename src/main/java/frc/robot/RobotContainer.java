@@ -157,10 +157,10 @@ m_drive.setDefaultCommand(
     m_driverController.y() // Y Button, Climb to Drive Position
         .onTrue(new ClimbToDrivePosition(m_climber));
 
-    m_driverController.back() // Back Button, Climb to Starting Config
+    m_driverController.start() // Back Button, Climb to Starting Config
         .onTrue(new ClimbToStartingConfig(m_climber));
 
-    m_driverController.start() // Start Button, Climb to Climb Position
+    m_driverController.back() // Start Button, Climb to Climb Position
         .onTrue(new ClimbToClimbPosition(m_climber));
 
     // Default commands
