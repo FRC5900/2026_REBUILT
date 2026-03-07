@@ -205,7 +205,7 @@ public class VisionSubsystem extends SubsystemBase {
     if (latestResult1 != null && latestResult1.hasTargets()) {
       for (PhotonTrackedTarget target : latestResult1.getTargets()) {
         if (target.getFiducialId() == tagId) {
-          cam1Target = target;
+          cam1Target = target;  
           break;
         }
       }

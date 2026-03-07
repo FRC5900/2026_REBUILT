@@ -24,6 +24,7 @@ public final class Constants {
 
     public static final double kDeadband = 0.08;
     public static final double kMaxOutput = -1; // speed i lowered it for you lol
+    public static final double kTurnMaxOutput = 1; // added to make the thing not be bad
     public static final double kTurnSlewRate = 4.2; // units per second
     public static final double kForwardSlewRate = 3.5; // units per second
 

@@ -114,7 +114,7 @@ m_drive.setDefaultCommand(
 
           turn =
               MathUtil.applyDeadband(turn, Constants.DriveConstants.kDeadband)
-                  * Constants.DriveConstants.kMaxOutput;
+                  * Constants.DriveConstants.kTurnMaxOutput;
           turn = m_turnLimiter.calculate(turn);
 
           m_drive.arcadeDrive(forward, turn);
