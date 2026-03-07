@@ -30,7 +30,11 @@ public class Launch extends Command {
   public void execute() {}
 
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_shooter.setShooterRoller(0);
+    m_shooter.setIndexer(0);
+    m_intake.setIntake(0);
+  }
 
   @Override
   public boolean isFinished() {
