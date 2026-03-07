@@ -127,7 +127,7 @@ m_odometry =
   }
 
 private double rightDistanceMeters() {
-  return -m_rightEncoder.getPosition()
+  return m_rightEncoder.getPosition()
       * (Math.PI * Constants.DriveConstants.kWheelDiameterMeters)
       / Constants.DriveConstants.kGearRatio;
 }
@@ -139,7 +139,7 @@ private double leftVelocityMetersPerSec() {
 }
 
 private double rightVelocityMetersPerSec() {
-  return -(m_rightEncoder.getVelocity() / 60.0)
+  return (m_rightEncoder.getVelocity() / 60.0)
       * (Math.PI * Constants.DriveConstants.kWheelDiameterMeters)
       / Constants.DriveConstants.kGearRatio;
 }
@@ -154,6 +154,14 @@ private double rightVelocityMetersPerSec() {
     rightDistanceMeters());
     SmartDashboard.putNumber("Gyro Heading", getHeading());
     SmartDashboard.putNumber("Gyro Raw Yaw", m_gyro.getYaw());
+    SmartDashboard.putNumber("Left Encoder Position", m_leftEncoder.getPosition());
+    SmartDashboard.putNumber("Right Encoder Position", m_rightEncoder.getPosition());
+    SmartDashboard.putNumber("Left Encoder Velocity", m_leftEncoder.getVelocity());
+    SmartDashboard.putNumber("Right Encoder Velocity", m_rightEncoder.getVelocity());
+    SmartDashboard.putNumber("Left Encoder Distance (m)", leftDistanceMeters());
+    SmartDashboard.putNumber("Right Encoder Distance (m)", rightDistanceMeters());
+    SmartDashboard.putNumber("Left Encoder Speed (m/s)", leftVelocityMetersPerSec());
+    SmartDashboard.putNumber("Right Encoder Speed (m/s)", rightVelocityMetersPerSec());
   }
 
 
