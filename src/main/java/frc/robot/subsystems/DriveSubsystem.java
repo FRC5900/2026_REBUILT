@@ -162,6 +162,11 @@ private double rightVelocityMetersPerSec() {
     SmartDashboard.putNumber("Right Encoder Distance (m)", rightDistanceMeters());
     SmartDashboard.putNumber("Left Encoder Speed (m/s)", leftVelocityMetersPerSec());
     SmartDashboard.putNumber("Right Encoder Speed (m/s)", rightVelocityMetersPerSec());
+    SmartDashboard.putNumber("Gyro Pitch", m_gyro.getPitch());
+    SmartDashboard.putNumber("Gyro Pitch Rate (deg/s)", m_gyro.getRawGyroY());
+    SmartDashboard.putNumber("Speed Limit - Bump", getBumpSpeedFactor());
+    SmartDashboard.putNumber("Speed Limit - Rocking", getRockingSpeedFactor());
+    SmartDashboard.putNumber("Speed Limit - Wheel Slip", getWheelSlipSpeedFactor());
   }
 
 
@@ -172,8 +177,42 @@ private double rightVelocityMetersPerSec() {
     
   
 
+  // multiplies speeds down when going over bump
+  private double getBumpSpeedFactor() {
+    double pitch = Math.abs(m_gyro.getPitch());
+    if (pitch <= Constants.DriveConstants.kBumpPitchThreshold) return 1.0;
+    if (pitch >= Constants.DriveConstants.kBumpMaxPitch) return Constants.DriveConstants.kBumpMinSpeedFactor;
+    double t = (pitch - Constants.DriveConstants.kBumpPitchThreshold)
+        / (Constants.DriveConstants.kBumpMaxPitch - Constants.DriveConstants.kBumpPitchThreshold);
+    return 1.0 - t * (1.0 - Constants.DriveConstants.kBumpMinSpeedFactor);
+  }
+
+  // multiplies speeds down when rocked
+  private double getRockingSpeedFactor() {
+    double pitchRate = Math.abs(m_gyro.getRawGyroY());
+    if (pitchRate <= Constants.DriveConstants.kRockPitchRateThreshold) return 1.0;
+    if (pitchRate >= Constants.DriveConstants.kRockMaxPitchRate) return Constants.DriveConstants.kRockMinSpeedFactor;
+    double t = (pitchRate - Constants.DriveConstants.kRockPitchRateThreshold)
+        / (Constants.DriveConstants.kRockMaxPitchRate - Constants.DriveConstants.kRockPitchRateThreshold);
+    return 1.0 - t * (1.0 - Constants.DriveConstants.kRockMinSpeedFactor);
+  }
+
+  // multiplies speeds down when wheels are slipping
+  private double getWheelSlipSpeedFactor() {
+    double wheelSpeed = Math.abs((leftVelocityMetersPerSec() + rightVelocityMetersPerSec()) / 2.0);
+    double imuSpeed = Math.abs(m_gyro.getVelocityX());
+    double excess = wheelSpeed - imuSpeed;
+    if (excess <= Constants.DriveConstants.kSlipThreshold) return 1.0;
+    if (excess >= Constants.DriveConstants.kSlipMaxExcess) return Constants.DriveConstants.kSlipMinSpeedFactor;
+    double t = (excess - Constants.DriveConstants.kSlipThreshold)
+        / (Constants.DriveConstants.kSlipMaxExcess - Constants.DriveConstants.kSlipThreshold);
+    return 1.0 - t * (1.0 - Constants.DriveConstants.kSlipMinSpeedFactor);
+  }
+
+  // failsafe; finds most restrictive
   public void arcadeDrive(double forward, double turn) {
-    m_drive.arcadeDrive(forward, -turn, true);
+    double forwardLimit = Math.min(getBumpSpeedFactor(), Math.min(getRockingSpeedFactor(), getWheelSlipSpeedFactor()));
+    m_drive.arcadeDrive(forward * forwardLimit, -turn, true);
   }
 
 

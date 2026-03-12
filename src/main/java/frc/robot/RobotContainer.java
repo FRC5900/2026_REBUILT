@@ -103,13 +103,6 @@ public class RobotContainer {
               MathUtil.applyDeadband(forward, Constants.DriveConstants.kDeadband)
                   * Constants.DriveConstants.kMaxOutput;
 
-          //instant stop smooth acceleration
-          if (forward == 0.0) {
-            m_forwardLimiter.reset(0.0);
-          } else {
-            forward = m_forwardLimiter.calculate(forward);
-          }
-
           turn =
               MathUtil.applyDeadband(turn, Constants.DriveConstants.kDeadband)
                   * Constants.DriveConstants.kTurnMaxOutput;
@@ -119,7 +112,7 @@ public class RobotContainer {
         },
         m_drive));
   }
-
+  
   private void configureButtonBindings() {
     // Operator controls
     m_operatorController.leftBumper() // Left Bumper, Intake (toggle)

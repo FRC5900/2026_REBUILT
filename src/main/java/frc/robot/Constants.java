@@ -29,16 +29,31 @@ public final class Constants {
     public static final double kForwardSlewRate = 3.5; // units per second
 
 
-    //Pathplanner stuff
+    // Pathplanner stuff
     public static final double kTrackWidthMeters = 0.5906;
     public static final double kWheelDiameterMeters = 0.1524; // 6" wheels = 0.1524m
     public static final double kGearRatio = 8.46; //motor rotations per wheel rotation     WE NEED TO FIGURE THIS OUT :D -- Justin
     public static final double kMaxSpeedMetersPerSec = -1;
 
-    //Turn to angle (180 flip)
+    // Turn to angle (180 flip)
     public static final double kTurnP = 0.040;           // TODO: tune
     public static final double kTurnTolerance = 5;      // degrees window
     public static final double kTurnMaxSpeed = 0.5;      // max turn output    TODO: MAKE GYRO WORKKKKK
+
+    // Bump speed limiting
+    public static final double kBumpPitchThreshold = 10.0;  // the pitch that it needs to be for it to take effect
+    public static final double kBumpMaxPitch = 20.0;         // minimum speed factor
+    public static final double kBumpMinSpeedFactor = 0.5;    // percentage of max speed at pitch
+
+    // Rocking damping 
+    public static final double kRockPitchRateThreshold = 30.0; // deg when damping starts
+    public static final double kRockMaxPitchRate = 90.0;        // minimum speed factor
+    public static final double kRockMinSpeedFactor = 0.4;       // percentage of max speed at pitch
+
+    // Wheel slip limiting (ABS)
+    public static final double kSlipThreshold = 0.15;       // m/s of wheels before robot starts limiting
+    public static final double kSlipMaxExcess = 0.5;         // m/s excess at minimum speed factor
+    public static final double kSlipMinSpeedFactor = 0.5;    // percentage of max speed at wheel slip
   }
 
   
@@ -55,7 +70,8 @@ public final class Constants {
 
   public static final class ClimbConstants {
     //SparkMaxs
-    public static final int kClimbMotorCanId = 9;
+    public static final int kRightClimbMotorCanId = 9;
+    public static final int kLeftClimbMotorCanId = 11;
 
     //Amp Limits
     public static final int kClimbMotorLimit = 40;
