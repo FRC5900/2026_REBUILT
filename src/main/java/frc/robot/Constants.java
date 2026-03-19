@@ -135,30 +135,21 @@ public final class Constants {
 
     //camera 0 - front left
 
-    public static final double kCamera0X = -0.12;  // 4.6" behind center
-    public static final double kCamera0Y = 0.34;   // 13.4" left of center
-    public static final double kCamera0Z = 0.2;    // meters up
+    public static final double kCamera0X = 0.315;
+    public static final double kCamera0Y = 0.292;
+    public static final double kCamera0Z = 0.2;
     public static final double kCamera0Roll = 0.0;
     public static final double kCamera0Pitch = -0.4;
     public static final double kCamera0Yaw = 0.0;
 
     //camera 1 - front right
 
-    public static final double kCamera1X = -0.12;  // 4.6" behind center
-    public static final double kCamera1Y = -0.35;  // 13.6" right of center
-    public static final double kCamera1Z = 0.2;    // meters up
+    public static final double kCamera1X = 0.315;
+    public static final double kCamera1Y = -0.292;
+    public static final double kCamera1Z = 0.2;
     public static final double kCamera1Roll = 0.0;
     public static final double kCamera1Pitch = -0.4;
     public static final double kCamera1Yaw = 0.0;
-
-    //camera 2 - center
-
-    public static final double kCamera2X = 0.051;  // 2" infront of center
-    public static final double kCamera2Y = -0.146; // 5.75" right of center
-    public static final double kCamera2Z = 0.2;    // meters up
-    public static final double kCamera2Roll = 0.0;
-    public static final double kCamera2Pitch = -0.4;
-    public static final double kCamera2Yaw = 0.0;  
 
     //filtering thresholds
     public static final double kMaxAmbiguity = 0.3;

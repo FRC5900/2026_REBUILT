@@ -17,16 +17,13 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 public class VisionSubsystem extends SubsystemBase {
   private final PhotonCamera camera0;
   private final PhotonCamera camera1;
-  private final PhotonCamera camera2; // Center camera for hub alignment
   private final AprilTagFieldLayout fieldLayout;
   private final Transform3d robotToCamera0;
   private final Transform3d robotToCamera1;
-  private final Transform3d robotToCamera2;
   private final BlinkinLEDController ledController;
 
   private PhotonPipelineResult latestResult0;
   private PhotonPipelineResult latestResult1;
-  private PhotonPipelineResult latestResult2;
   private boolean hasTarget = false;
   private double targetYaw = 0.0;
   private double targetPitch = 0.0;
@@ -36,7 +33,6 @@ public class VisionSubsystem extends SubsystemBase {
   public VisionSubsystem() {
     camera0 = new PhotonCamera(VisionConstants.kCamera0Name);
     camera1 = new PhotonCamera(VisionConstants.kCamera1Name);
-    camera2 = new PhotonCamera(VisionConstants.kCamera2Name);
     ledController = BlinkinLEDController.getInstance();
 
     fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
@@ -58,15 +54,6 @@ public class VisionSubsystem extends SubsystemBase {
             VisionConstants.kCamera1Roll,
             VisionConstants.kCamera1Pitch,
             VisionConstants.kCamera1Yaw));
-
-    robotToCamera2 = new Transform3d(
-        VisionConstants.kCamera2X,
-        VisionConstants.kCamera2Y,
-        VisionConstants.kCamera2Z,
-        new Rotation3d(
-            VisionConstants.kCamera2Roll,
-            VisionConstants.kCamera2Pitch,
-            VisionConstants.kCamera2Yaw));
   }
 
   @Override
@@ -79,11 +66,6 @@ public class VisionSubsystem extends SubsystemBase {
     List<PhotonPipelineResult> results1 = camera1.getAllUnreadResults();
     if (!results1.isEmpty()) {
       latestResult1 = results1.get(results1.size() - 1);
-    }
-
-    List<PhotonPipelineResult> results2 = camera2.getAllUnreadResults();
-    if (!results2.isEmpty()) {
-      latestResult2 = results2.get(results2.size() - 1);
     }
 
     PhotonTrackedTarget bestTarget = null;
@@ -100,15 +82,6 @@ public class VisionSubsystem extends SubsystemBase {
 
     if (latestResult1 != null && latestResult1.hasTargets()) {
       for (PhotonTrackedTarget target : latestResult1.getTargets()) {
-        if (target.getArea() > bestArea) {
-          bestArea = target.getArea();
-          bestTarget = target;
-        }
-      }
-    }
-
-    if (latestResult2 != null && latestResult2.hasTargets()) {
-      for (PhotonTrackedTarget target : latestResult2.getTargets()) {
         if (target.getArea() > bestArea) {
           bestArea = target.getArea();
           bestTarget = target;
@@ -144,7 +117,6 @@ public class VisionSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Vision/TargetID", targetId);
     SmartDashboard.putBoolean("Vision/Camera0Connected", camera0.isConnected());
     SmartDashboard.putBoolean("Vision/Camera1Connected", camera1.isConnected());
-    SmartDashboard.putBoolean("Vision/Camera2Connected", camera2.isConnected());
   }
 
   public boolean hasTarget() {
@@ -183,7 +155,7 @@ public class VisionSubsystem extends SubsystemBase {
     return false;
   }
 
-  
+
 // get target
 
 
@@ -192,7 +164,6 @@ public class VisionSubsystem extends SubsystemBase {
   public PhotonTrackedTarget getTargetById(int tagId) {
     PhotonTrackedTarget cam0Target = null;
     PhotonTrackedTarget cam1Target = null;
-    PhotonTrackedTarget cam2Target = null;
 
     if (latestResult0 != null && latestResult0.hasTargets()) {
       for (PhotonTrackedTarget target : latestResult0.getTargets()) {
@@ -205,27 +176,13 @@ public class VisionSubsystem extends SubsystemBase {
     if (latestResult1 != null && latestResult1.hasTargets()) {
       for (PhotonTrackedTarget target : latestResult1.getTargets()) {
         if (target.getFiducialId() == tagId) {
-          cam1Target = target;  
-          break;
-        }
-      }
-    }
-    if (latestResult2 != null && latestResult2.hasTargets()) {
-      for (PhotonTrackedTarget target : latestResult2.getTargets()) {
-        if (target.getFiducialId() == tagId) {
-          cam2Target = target;
+          cam1Target = target;
           break;
         }
       }
     }
 
-    // PREFER 2nd camera (its centered better!)
-
-    if (cam2Target != null) {
-      lastTargetCamera = 2;
-      return cam2Target;
-    } else if (cam0Target != null && cam1Target != null) {
-      // Check if the side cameras see the tag
+    if (cam0Target != null && cam1Target != null) {
       if (cam0Target.getArea() >= cam1Target.getArea()) {
         lastTargetCamera = 0;
         return cam0Target;
@@ -251,8 +208,6 @@ public class VisionSubsystem extends SubsystemBase {
       return VisionConstants.kCamera0Y;
     } else if (lastTargetCamera == 1) {
       return VisionConstants.kCamera1Y;
-    } else if (lastTargetCamera == 2) {
-      return VisionConstants.kCamera2Y;
     }
     return 0.0;
   }
@@ -262,7 +217,7 @@ public class VisionSubsystem extends SubsystemBase {
     return target != null ? target.getYaw() : 0.0;
   }
 
-  
+
   public DualTagResult getDualTagData(int leftTagId, int rightTagId) {
     PhotonTrackedTarget leftTarget = getTargetById(leftTagId);
     PhotonTrackedTarget rightTarget = getTargetById(rightTagId);
@@ -329,7 +284,7 @@ public class VisionSubsystem extends SubsystemBase {
   }
 
   public PhotonPipelineResult getLatestResult() {
-    
+
     // find best result, idk if this works :3
 
     if (latestResult0 != null && latestResult0.hasTargets()) {
