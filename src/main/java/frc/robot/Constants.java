@@ -41,19 +41,19 @@ public final class Constants {
     public static final double kTurnMaxSpeed = 0.5;      // max turn output    TODO: MAKE GYRO WORKKKKK
 
     // Bump speed limiting
-    public static final double kBumpPitchThreshold = 10.0;  // the pitch that it needs to be for it to take effect
-    public static final double kBumpMaxPitch = 20.0;         // minimum speed factor
-    public static final double kBumpMinSpeedFactor = 0.5;    // percentage of max speed at pitch
+    public static final double kBumpPitchThreshold = 18.0;  // the pitch that it needs to be for it to take effect
+    public static final double kBumpMaxPitch = 35.0;         // minimum speed factor
+    public static final double kBumpMinSpeedFactor = 0.65;   // percentage of max speed at pitch
 
-    // Rocking damping 
-    public static final double kRockPitchRateThreshold = 30.0; // deg when damping starts
-    public static final double kRockMaxPitchRate = 90.0;        // minimum speed factor
-    public static final double kRockMinSpeedFactor = 0.4;       // percentage of max speed at pitch
+    // Rocking damping
+    public static final double kRockPitchRateThreshold = 60.0; // deg when damping starts
+    public static final double kRockMaxPitchRate = 150.0;       // minimum speed factor
+    public static final double kRockMinSpeedFactor = 0.7;       // percentage of max speed at pitch
 
     // Wheel slip limiting (ABS)
-    public static final double kSlipThreshold = 0.15;       // m/s of wheels before robot starts limiting
-    public static final double kSlipMaxExcess = 0.5;         // m/s excess at minimum speed factor
-    public static final double kSlipMinSpeedFactor = 0.5;    // percentage of max speed at wheel slip
+    public static final double kSlipThreshold = 0.5;        // m/s of wheels before robot starts limiting
+    public static final double kSlipMaxExcess = 1.0;         // m/s excess at minimum speed factor
+    public static final double kSlipMinSpeedFactor = 0.7;    // percentage of max speed at wheel slip
   }
 
   

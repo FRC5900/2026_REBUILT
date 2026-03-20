@@ -26,6 +26,7 @@ import frc.robot.commands.ClimbToClimbPosition;
 import frc.robot.commands.TurnBy180;
 import frc.robot.commands.Puke;
 
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -127,15 +128,27 @@ public class RobotContainer {
         .whileTrue(new Puke(m_shooter));
 
     m_operatorController.y() // Y, 100% Full Potential launch
-        .whileTrue(new RunCommand(() -> m_shooter.setShooterRoller(1.0), m_shooter));
+        .whileTrue(new RunCommand(() -> {
+          m_shooter.setShooterRoller(1.0);
+          m_shooter.setIndexer(ShooterConstants.kIndexerLaunchPower);
+        }, m_shooter));
 
-    // Driver controls
-    m_driverController.povDown() // D-Pad Down, Climb Down
-        .whileTrue(new ClimbDown(m_climber));
-
-    m_driverController.povUp() // D-Pad Up, Climb Up
+    m_operatorController.povUp() // D-Pad Up, Climb Up
         .whileTrue(new ClimbUp(m_climber));
 
+    m_operatorController.povDown() // D-Pad Down, Climb Down
+        .whileTrue(new ClimbDown(m_climber));
+
+    m_operatorController.b() // B, Climb to Climb Position
+        .onTrue(new ClimbToClimbPosition(m_climber));
+
+    m_operatorController.x() // X, Retract to Drive Position
+        .onTrue(new ClimbToDrivePosition(m_climber));
+
+    m_operatorController.start() // Start, Climb to Starting Config
+        .onTrue(new ClimbToStartingConfig(m_climber));
+
+    // Driver controls
     m_driverController.a() // A Button, Align to Hub
         .whileTrue(new AlignToHub(m_drive, m_vision));
 
@@ -144,15 +157,6 @@ public class RobotContainer {
 
     m_driverController.b() // B Button, Align to Climb
         .whileTrue(new AlignToClimb(m_drive, m_vision));
-
-    m_driverController.y() // Y Button, Climb to Drive Position
-        .onTrue(new ClimbToDrivePosition(m_climber));
-
-    m_driverController.start() // Back Button, Climb to Starting Config
-        .onTrue(new ClimbToStartingConfig(m_climber));
-
-    m_driverController.back() // Start Button, Climb to Climb Position
-        .onTrue(new ClimbToClimbPosition(m_climber));
 
     // Default commands
     m_shooter.setDefaultCommand(m_shooter.run(() -> m_shooter.stop()));

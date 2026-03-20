@@ -4,8 +4,11 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.PersistMode;
+import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -67,17 +70,20 @@ private final DifferentialDriveOdometry m_odometry;
 
   public DriveSubsystem() {
    
+    SparkMaxConfig rightConfig = new SparkMaxConfig();
+    rightConfig.inverted(true);
+    m_frontRight.configure(rightConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+    m_rearRight.configure(rightConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
 
-  m_drive =
+    m_drive =
         new DifferentialDrive(
             left -> {
               m_frontLeft.set(left);
               m_rearLeft.set(left);
             },
             right -> {
-
-              m_frontRight.set(-right);
-              m_rearRight.set(-right);
+              m_frontRight.set(right);
+              m_rearRight.set(right);
             });
         m_drive.setSafetyEnabled(false);
 
