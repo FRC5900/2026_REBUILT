@@ -219,22 +219,18 @@ private double rightVelocityMetersPerSec() {
 
   // failsafe; finds most restrictive
   public void arcadeDrive(double forward, double turn) {
-    if (Math.abs(turn) < 0.001 && Math.abs(forward) > 0.05) {
-      // drift correction (only when going straight, not when driver is turning)
+    if (turn == 0.0 && Math.abs(forward) > 0.05) {
+      // drift correction only when going straight with no turn input
       double headingError = m_targetHeading - getHeading();
       if (headingError > 180) headingError -= 360;
       if (headingError < -180) headingError += 360;
-      double correction = MathUtil.clamp(
+      turn = MathUtil.clamp(
           headingError * Constants.DriveConstants.kDriftCorrectionP,
           -Constants.DriveConstants.kDriftCorrectionMaxTurn,
           Constants.DriveConstants.kDriftCorrectionMaxTurn);
-      turn = correction;
-    } else if (Math.abs(turn) >= 0.001) {
+    } else {
+      // driver is turning — update target heading and pass turn through untouched
       m_targetHeading = getHeading();
-      // boost turn power at standstill to overcome static friction
-      if (Math.abs(forward) < 0.05 && Math.abs(turn) < Constants.DriveConstants.kStandstillTurnBoost) {
-        turn = Math.copySign(Constants.DriveConstants.kStandstillTurnBoost, turn);
-      }
     }
 
     m_drive.arcadeDrive(forward, -turn, false);
