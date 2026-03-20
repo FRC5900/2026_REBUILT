@@ -115,7 +115,9 @@ public class RobotContainer {
   }
   
   private void configureButtonBindings() {
+  
     // Operator controls
+
     m_operatorController.leftBumper() // Left Bumper, Intake (toggle)
         .onTrue(Commands.runOnce(() -> m_intakeEnabled = !m_intakeEnabled));
     new Trigger(() -> m_intakeEnabled).whileTrue(new Intake(m_intake, m_shooter));
@@ -149,6 +151,7 @@ public class RobotContainer {
         .onTrue(new ClimbToStartingConfig(m_climber));
 
     // Driver controls
+    
     m_driverController.a() // A Button, Align to Hub
         .whileTrue(new AlignToHub(m_drive, m_vision));
 

@@ -53,9 +53,11 @@ public class DriveSubsystem extends SubsystemBase {
 
   private final DifferentialDrive m_drive;
 
-  // NEO encoders 
+  // NEO encoders
 private final RelativeEncoder m_leftEncoder = m_frontLeft.getEncoder();
 private final RelativeEncoder m_rightEncoder = m_frontRight.getEncoder();
+private final RelativeEncoder m_rearLeftEncoder = m_rearLeft.getEncoder();
+private final RelativeEncoder m_rearRightEncoder = m_rearRight.getEncoder();
 
 // Gyro
 private final AHRS m_gyro = new AHRS(AHRS.NavXComType.kMXP_SPI);
@@ -160,14 +162,18 @@ private double rightVelocityMetersPerSec() {
     rightDistanceMeters());
     SmartDashboard.putNumber("Gyro Heading", getHeading());
     SmartDashboard.putNumber("Gyro Raw Yaw", m_gyro.getYaw());
-    SmartDashboard.putNumber("Left Encoder Position", m_leftEncoder.getPosition());
-    SmartDashboard.putNumber("Right Encoder Position", m_rightEncoder.getPosition());
-    SmartDashboard.putNumber("Left Encoder Velocity", m_leftEncoder.getVelocity());
-    SmartDashboard.putNumber("Right Encoder Velocity", m_rightEncoder.getVelocity());
-    SmartDashboard.putNumber("Left Encoder Distance (m)", leftDistanceMeters());
-    SmartDashboard.putNumber("Right Encoder Distance (m)", rightDistanceMeters());
-    SmartDashboard.putNumber("Left Encoder Speed (m/s)", leftVelocityMetersPerSec());
-    SmartDashboard.putNumber("Right Encoder Speed (m/s)", rightVelocityMetersPerSec());
+    SmartDashboard.putNumber("Drive/FL Encoder Position", m_leftEncoder.getPosition());
+    SmartDashboard.putNumber("Drive/RL Encoder Position", m_rearLeftEncoder.getPosition());
+    SmartDashboard.putNumber("Drive/FR Encoder Position", m_rightEncoder.getPosition());
+    SmartDashboard.putNumber("Drive/RR Encoder Position", m_rearRightEncoder.getPosition());
+    SmartDashboard.putNumber("Drive/FL Encoder Velocity", m_leftEncoder.getVelocity());
+    SmartDashboard.putNumber("Drive/RL Encoder Velocity", m_rearLeftEncoder.getVelocity());
+    SmartDashboard.putNumber("Drive/FR Encoder Velocity", m_rightEncoder.getVelocity());
+    SmartDashboard.putNumber("Drive/RR Encoder Velocity", m_rearRightEncoder.getVelocity());
+    SmartDashboard.putNumber("Drive/Left Distance (m)", leftDistanceMeters());
+    SmartDashboard.putNumber("Drive/Right Distance (m)", rightDistanceMeters());
+    SmartDashboard.putNumber("Drive/Left Speed (m/s)", leftVelocityMetersPerSec());
+    SmartDashboard.putNumber("Drive/Right Speed (m/s)", rightVelocityMetersPerSec());
     SmartDashboard.putNumber("Gyro Pitch", m_gyro.getPitch());
     SmartDashboard.putNumber("Gyro Pitch Rate (deg/s)", m_gyro.getRawGyroY());
     SmartDashboard.putNumber("Speed Limit - Bump", getBumpSpeedFactor());
