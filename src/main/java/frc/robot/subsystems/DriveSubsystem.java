@@ -74,15 +74,12 @@ private double m_targetHeading = 0.0;
 
   public DriveSubsystem() {
    
-    SparkMaxConfig leftConfig = new SparkMaxConfig();
-    leftConfig.idleMode(IdleMode.kCoast);
-    m_frontLeft.configure(leftConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
-    m_rearLeft.configure(leftConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
-
-    SparkMaxConfig rightConfig = new SparkMaxConfig();
-    rightConfig.inverted(true).idleMode(IdleMode.kCoast);
-    m_frontRight.configure(rightConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
-    m_rearRight.configure(rightConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+    SparkMaxConfig driveConfig = new SparkMaxConfig();
+    driveConfig.idleMode(IdleMode.kBrake);
+    m_frontLeft.configure(driveConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+    m_rearLeft.configure(driveConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+    m_frontRight.configure(driveConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+    m_rearRight.configure(driveConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
 
     m_drive =
         new DifferentialDrive(
@@ -91,8 +88,8 @@ private double m_targetHeading = 0.0;
               m_rearLeft.set(left);
             },
             right -> {
-              m_frontRight.set(right);
-              m_rearRight.set(right);
+              m_frontRight.set(-right);
+              m_rearRight.set(-right);
             });
         m_drive.setSafetyEnabled(false);
 
