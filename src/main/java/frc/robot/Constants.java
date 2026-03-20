@@ -40,6 +40,10 @@ public final class Constants {
     public static final double kTurnTolerance = 5;      // degrees window
     public static final double kTurnMaxSpeed = 0.5;      // max turn output    TODO: MAKE GYRO WORKKKKK
 
+    // Gyro drift correction 
+    public static final double kDriftCorrectionP = 0.03;     // how aggressively to correct drift
+    public static final double kDriftCorrectionMaxTurn = 0.2; // max corrective turn output
+
     // Bump speed limiting
     public static final double kBumpPitchThreshold = 18.0;  // the pitch that it needs to be for it to take effect
     public static final double kBumpMaxPitch = 35.0;         // minimum speed factor

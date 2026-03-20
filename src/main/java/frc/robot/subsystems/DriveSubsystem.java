@@ -68,6 +68,7 @@ private final DifferentialDriveKinematics m_kinematics =
 
 
 private final DifferentialDriveOdometry m_odometry;
+private double m_targetHeading = 0.0;
   
 
   public DriveSubsystem() {
@@ -181,14 +182,6 @@ private double rightVelocityMetersPerSec() {
     SmartDashboard.putNumber("Speed Limit - Wheel Slip", getWheelSlipSpeedFactor());
   }
 
-
-
-
-            
-
-    
-  
-
   // multiplies speeds down when going over bump
   private double getBumpSpeedFactor() {
     double pitch = Math.abs(m_gyro.getPitch());
@@ -224,6 +217,22 @@ private double rightVelocityMetersPerSec() {
   // failsafe; finds most restrictive
   public void arcadeDrive(double forward, double turn) {
     double forwardLimit = Math.min(getBumpSpeedFactor(), Math.min(getRockingSpeedFactor(), getWheelSlipSpeedFactor()));
+    if (Math.abs(turn) < 0.05 && Math.abs(forward) > 0.05) {
+      // dirft cirrebctuinb
+      double headingError = m_targetHeading - getHeading();
+      if (headingError > 180) headingError -= 360;
+      if (headingError < -180) headingError += 360;
+      double correction = MathUtil.clamp(
+          headingError * Constants.DriveConstants.kDriftCorrectionP,
+          -Constants.DriveConstants.kDriftCorrectionMaxTurn,
+          Constants.DriveConstants.kDriftCorrectionMaxTurn);
+      turn = correction;
+    } else if (Math.abs(turn) >= 0.05) {
+      // ignore normal turning
+      m_targetHeading = getHeading();
+    }
+
+    double forwardLimit = Math.min(getBumpSpeedFactor(), getRockingSpeedFactor());
     m_drive.arcadeDrive(forward * forwardLimit, -turn, true);
   }
 
