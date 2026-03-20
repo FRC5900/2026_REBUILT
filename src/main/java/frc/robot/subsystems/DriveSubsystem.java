@@ -216,7 +216,6 @@ private double rightVelocityMetersPerSec() {
 
   // failsafe; finds most restrictive
   public void arcadeDrive(double forward, double turn) {
-    double forwardLimit = Math.min(getBumpSpeedFactor(), Math.min(getRockingSpeedFactor(), getWheelSlipSpeedFactor()));
     if (Math.abs(turn) < 0.05 && Math.abs(forward) > 0.05) {
       // dirft cirrebctuinb
       double headingError = m_targetHeading - getHeading();
