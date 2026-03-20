@@ -43,6 +43,7 @@ public final class Constants {
     // Gyro drift correction 
     public static final double kDriftCorrectionP = 0.07;     // how aggressively to correct drift
     public static final double kDriftCorrectionMaxTurn = 0.4; // max corrective turn output
+    public static final double kStandstillTurnBoost = 0.25;  // minimum turn output at standstill to overcome static friction
 
     // Bump speed limiting
     public static final double kBumpPitchThreshold = 18.0;  // the pitch that it needs to be for it to take effect
