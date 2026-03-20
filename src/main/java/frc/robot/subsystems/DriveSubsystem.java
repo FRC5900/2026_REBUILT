@@ -8,6 +8,7 @@ import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -73,8 +74,13 @@ private double m_targetHeading = 0.0;
 
   public DriveSubsystem() {
    
+    SparkMaxConfig leftConfig = new SparkMaxConfig();
+    leftConfig.idleMode(IdleMode.kCoast);
+    m_frontLeft.configure(leftConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+    m_rearLeft.configure(leftConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+
     SparkMaxConfig rightConfig = new SparkMaxConfig();
-    rightConfig.inverted(true);
+    rightConfig.inverted(true).idleMode(IdleMode.kCoast);
     m_frontRight.configure(rightConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
     m_rearRight.configure(rightConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
 
@@ -231,8 +237,7 @@ private double rightVelocityMetersPerSec() {
       m_targetHeading = getHeading();
     }
 
-    double forwardLimit = Math.min(getBumpSpeedFactor(), getRockingSpeedFactor());
-    m_drive.arcadeDrive(forward * forwardLimit, -turn, true);
+    m_drive.arcadeDrive(forward, -turn, true);
   }
 
 
