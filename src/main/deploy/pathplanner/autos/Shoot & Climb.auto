@@ -9,18 +9,30 @@
           "data": {
             "commands": [
               {
+                "type": "path",
+                "data": {
+                  "pathName": "mid to shoot path"
+                }
+              },
+              {
                 "type": "named",
                 "data": {
                   "name": "ClimbDown"
                 }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "New Path"
-                }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Launch"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "from shoot mid to ladder"
           }
         },
         {
