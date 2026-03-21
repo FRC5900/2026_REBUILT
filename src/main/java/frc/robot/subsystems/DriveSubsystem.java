@@ -69,7 +69,6 @@ private final DifferentialDriveKinematics m_kinematics =
 
 
 private final DifferentialDriveOdometry m_odometry;
-private double m_targetHeading = 0.0;
   
 
   public DriveSubsystem() {
@@ -217,23 +216,22 @@ private double rightVelocityMetersPerSec() {
     return 1.0 - t * (1.0 - Constants.DriveConstants.kSlipMinSpeedFactor);
   }
 
-  // failsafe; finds most restrictive
   public void arcadeDrive(double forward, double turn) {
-    if (turn == 0.0 && Math.abs(forward) > 0.05) {
-      // drift correction only when going straight with no turn input
-      double headingError = m_targetHeading - getHeading();
-      if (headingError > 180) headingError -= 360;
-      if (headingError < -180) headingError += 360;
-      turn = MathUtil.clamp(
-          headingError * Constants.DriveConstants.kDriftCorrectionP,
-          -Constants.DriveConstants.kDriftCorrectionMaxTurn,
-          Constants.DriveConstants.kDriftCorrectionMaxTurn);
-    } else {
-      // driver is turning — update target heading and pass turn through untouched
-      m_targetHeading = getHeading();
-    }
+    // double m_targetHeading = 0.0;
+    // if (Math.abs(turn) < 0.05 && Math.abs(forward) > 0.05) {
+    //   // driver going straight — correct heading drift using gyro
+    //   double headingError = getHeading() - m_targetHeading;
+    //   if (headingError > 180) headingError -= 360;
+    //   if (headingError < -180) headingError += 360;
+    //   turn = MathUtil.clamp(
+    //       headingError * Constants.DriveConstants.kDriftCorrectionP,
+    //       -Constants.DriveConstants.kDriftCorrectionMaxTurn,
+    //       Constants.DriveConstants.kDriftCorrectionMaxTurn);
+    // } else if (Math.abs(turn) >= 0.05) {
+    //   m_targetHeading = getHeading();
+    // }
 
-    m_drive.arcadeDrive(forward, -turn, false);
+    m_drive.arcadeDrive(forward, -turn, true);
   }
 
 

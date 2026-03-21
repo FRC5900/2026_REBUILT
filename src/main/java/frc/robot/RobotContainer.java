@@ -103,6 +103,7 @@ public class RobotContainer {
           forward =
               MathUtil.applyDeadband(forward, Constants.DriveConstants.kDeadband)
                   * Constants.DriveConstants.kMaxOutput;
+          forward = m_forwardLimiter.calculate(forward);
 
           turn =
               MathUtil.applyDeadband(turn, Constants.DriveConstants.kDeadband)

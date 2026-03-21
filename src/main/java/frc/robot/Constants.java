@@ -26,7 +26,7 @@ public final class Constants {
     public static final double kMaxOutput = -1; // speed i lowered it for you lol
     public static final double kTurnMaxOutput = 1; // added to make the thing not be bad
     public static final double kTurnSlewRate = 4.2; // units per second
-    public static final double kForwardSlewRate = 3.5; // units per second
+    public static final double kForwardSlewRate = 2.0; // units per second
 
 
     // Pathplanner stuff
@@ -41,7 +41,7 @@ public final class Constants {
     public static final double kTurnMaxSpeed = 0.5;      // max turn output    TODO: MAKE GYRO WORKKKKK
 
     // Gyro drift correction 
-    public static final double kDriftCorrectionP = 0.07;     // how aggressively to correct drift
+    public static final double kDriftCorrectionP = 0.09 ;     // how aggressively to correct drift
     public static final double kDriftCorrectionMaxTurn = 0.4; // max corrective turn output
     public static final double kStandstillTurnBoost = 0.25;  // minimum turn output at standstill to overcome static friction
 
