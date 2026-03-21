@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.4878317535545023,
-        "y": 4.142464454976302
+        "x": 3.5093246445497632,
+        "y": 4.08873222748815
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.078983942810611,
-        "y": 4.142464454976302
+        "x": 4.100324644549764,
+        "y": 4.08873222748815
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.5319786729857814,
-        "y": 4.142464454976302
+        "x": 1.5749644549763033,
+        "y": 4.08873222748815
       },
       "prevControl": {
-        "x": 1.2819786729857814,
-        "y": 4.142464454976302
+        "x": 1.3249644549763033,
+        "y": 4.08873222748815
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,12 +32,6 @@
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
-    {
-      "name": "Launch",
-      "waypointRelativePos": 0,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
     {
       "name": "ClimbDown",
       "waypointRelativePos": 0,
@@ -52,8 +46,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 0.4,
+    "maxAcceleration": 0.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -63,11 +57,11 @@
     "velocity": 0,
     "rotation": 0.0
   },
-  "reversed": false,
+  "reversed": true,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

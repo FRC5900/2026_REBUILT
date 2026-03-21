@@ -91,8 +91,8 @@ public final class Constants {
 
     //Climb Positions (encoder units) - re-measure after tuning kEncoderOffset
     public static final double kStartingConfig = 0;      // starting position before match
-    public static final double kDrivePosition = 235.5;       // retracted position for driving around
-    public static final double kClimbPosition = -157;       // extended position for climbing
+    public static final double kDrivePosition = 182;       // retracted position for driving around
+    public static final double kClimbPosition = -142;       // extended position for climbing
 
     public static final double kPositionTolerance = 2;
   }
