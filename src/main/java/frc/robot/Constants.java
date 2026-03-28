@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.swerve.SwerveDrivetrain.SwerveControlParameters;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -26,7 +28,8 @@ public final class Constants {
     public static final double kMaxOutput = -1; // speed i lowered it for you lol
     public static final double kTurnMaxOutput = 1; // added to make the thing not be bad
     public static final double kTurnSlewRate = 4.2; // units per second
-    public static final double kForwardSlewRate = 2.0; // units per second
+    public static final double kForwardAccelSlewRate = 4.0; // units/sec
+    public static final double kForwardDecelSlewRate = 2.0; // units/sec
 
 
     // Pathplanner stuff
@@ -91,10 +94,11 @@ public final class Constants {
 
     //Climb Positions (encoder units) - re-measure after tuning kEncoderOffset
     public static final double kStartingConfig = 0;      // starting position before match
-    public static final double kDrivePosition = 182;       // retracted position for driving around
+    public static final double kDrivePosition = 182;       // retracted position for  driving around
     public static final double kClimbPosition = -142;       // extended position for climbing
 
     public static final double kPositionTolerance = 2;
+    
   }
 
   public static final class ShooterConstants {
@@ -109,13 +113,13 @@ public final class Constants {
 
     //Indexer Constants
     public static final double kIndexerIntakingPower = -0.8;
-    public static final double kIndexerLaunchPower = 0.6;
+    public static final double kIndexerLaunchPower = 1;
     public static final double kIndexerSpinUp = -0.5;
     public static final double kIndexSpinUpTime = 0.75;
 
     //Launcher Speeds
-    public static final double kShooterLaunchPower = 0.6;
-    public static final double kLaunchPower = 0.85;
+    public static final double kShooterLaunchPower = 0.89;
+    public static final double kLaunchPower = 0.89;
     public static final double kShooterPukePower = -0.8;
     public static final double kShooterTargetRPM = 4000.0;
     public static final double kShooterSpeedTolerance = 200.0;
@@ -144,7 +148,7 @@ public final class Constants {
     public static final double kCamera0Y = 0.292;
     public static final double kCamera0Z = 0.2;
     public static final double kCamera0Roll = 0.0;
-    public static final double kCamera0Pitch = -0.4;
+    public static final double kCamera0Pitch = 0.524;
     public static final double kCamera0Yaw = 0.0;
 
     //camera 1 - front right
@@ -153,7 +157,7 @@ public final class Constants {
     public static final double kCamera1Y = -0.292;
     public static final double kCamera1Z = 0.2;
     public static final double kCamera1Roll = 0.0;
-    public static final double kCamera1Pitch = -0.4;
+    public static final double kCamera1Pitch = 0.524;
     public static final double kCamera1Yaw = 0.0;
 
     //filtering thresholds

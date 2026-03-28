@@ -115,6 +115,7 @@ public class VisionSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Vision/TargetPitch", targetPitch);
     SmartDashboard.putNumber("Vision/TargetArea", targetArea);
     SmartDashboard.putNumber("Vision/TargetID", targetId);
+    SmartDashboard.putNumber("Vision/TargetAmbiguity", bestTarget != null ? bestTarget.getPoseAmbiguity() : -1);
     SmartDashboard.putBoolean("Vision/Camera0Connected", camera0.isConnected());
     SmartDashboard.putBoolean("Vision/Camera1Connected", camera1.isConnected());
   }
@@ -167,7 +168,8 @@ public class VisionSubsystem extends SubsystemBase {
 
     if (latestResult0 != null && latestResult0.hasTargets()) {
       for (PhotonTrackedTarget target : latestResult0.getTargets()) {
-        if (target.getFiducialId() == tagId) {
+        if (target.getFiducialId() == tagId
+            && target.getPoseAmbiguity() <= VisionConstants.kMaxAmbiguity) {
           cam0Target = target;
           break;
         }
@@ -175,7 +177,8 @@ public class VisionSubsystem extends SubsystemBase {
     }
     if (latestResult1 != null && latestResult1.hasTargets()) {
       for (PhotonTrackedTarget target : latestResult1.getTargets()) {
-        if (target.getFiducialId() == tagId) {
+        if (target.getFiducialId() == tagId
+            && target.getPoseAmbiguity() <= VisionConstants.kMaxAmbiguity) {
           cam1Target = target;
           break;
         }
@@ -183,7 +186,8 @@ public class VisionSubsystem extends SubsystemBase {
     }
 
     if (cam0Target != null && cam1Target != null) {
-      if (cam0Target.getArea() >= cam1Target.getArea()) {
+      // prefer lower ambiguity
+      if (cam0Target.getPoseAmbiguity() <= cam1Target.getPoseAmbiguity()) {
         lastTargetCamera = 0;
         return cam0Target;
       } else {

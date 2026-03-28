@@ -45,8 +45,7 @@ public class RobotContainer {
 
   private final SlewRateLimiter m_turnLimiter =
       new SlewRateLimiter(Constants.DriveConstants.kTurnSlewRate);
-  private final SlewRateLimiter m_forwardLimiter = 
-      new SlewRateLimiter(Constants.DriveConstants.kForwardSlewRate);
+  private double m_prevForward = 0.0;
 
   private boolean m_intakeEnabled = false;
 
@@ -103,7 +102,12 @@ public class RobotContainer {
           forward =
               MathUtil.applyDeadband(forward, Constants.DriveConstants.kDeadband)
                   * Constants.DriveConstants.kMaxOutput;
-          forward = m_forwardLimiter.calculate(forward);
+          double forwardDelta = forward - m_prevForward;
+          double forwardLimit = (Math.abs(forward) < Math.abs(m_prevForward))
+              ? Constants.DriveConstants.kForwardDecelSlewRate * 0.02
+              : Constants.DriveConstants.kForwardAccelSlewRate * 0.02;
+          forward = m_prevForward + MathUtil.clamp(forwardDelta, -forwardLimit, forwardLimit);
+          m_prevForward = forward;
 
           turn =
               MathUtil.applyDeadband(turn, Constants.DriveConstants.kDeadband)
@@ -136,11 +140,13 @@ public class RobotContainer {
           m_shooter.setIndexer(ShooterConstants.kIndexerLaunchPower);
         }, m_shooter));
 
-    m_operatorController.povUp() // D-Pad Up, Climb Up
+    m_operatorController.povDown() // D-Pad Down, Climb Up
         .whileTrue(new ClimbUp(m_climber));
 
-    m_operatorController.povDown() // D-Pad Down, Climb Down
+    m_operatorController.povUp() // D-Pad Up, Climb Down
         .whileTrue(new ClimbDown(m_climber));
+
+        // i know this is weird, just bear with me
 
     m_operatorController.b() // B, Climb to Climb Position
         .onTrue(new ClimbToClimbPosition(m_climber));

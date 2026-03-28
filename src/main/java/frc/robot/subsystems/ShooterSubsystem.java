@@ -12,6 +12,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 
@@ -42,6 +43,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
     m_leftEncoder = m_leftShooter.getEncoder();
     m_rightEncoder = m_rightShooter.getEncoder();
+    
+    SmartDashboard.putNumber("Shooter Bus Voltage", m_leftShooter.getBusVoltage());
   }
 
   public void setShooterRoller(double power) {
