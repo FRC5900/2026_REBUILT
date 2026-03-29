@@ -58,14 +58,22 @@ public class VisionSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    List<PhotonPipelineResult> results0 = camera0.getAllUnreadResults();
-    if (!results0.isEmpty()) {
-      latestResult0 = results0.get(results0.size() - 1);
+    if (camera0.isConnected()) {
+      List<PhotonPipelineResult> results0 = camera0.getAllUnreadResults();
+      if (!results0.isEmpty()) {
+        latestResult0 = results0.get(results0.size() - 1);
+      }
+    } else {
+      latestResult0 = null;
     }
 
-    List<PhotonPipelineResult> results1 = camera1.getAllUnreadResults();
-    if (!results1.isEmpty()) {
-      latestResult1 = results1.get(results1.size() - 1);
+    if (camera1.isConnected()) {
+      List<PhotonPipelineResult> results1 = camera1.getAllUnreadResults();
+      if (!results1.isEmpty()) {
+        latestResult1 = results1.get(results1.size() - 1);
+      }
+    } else {
+      latestResult1 = null;
     }
 
     PhotonTrackedTarget bestTarget = null;

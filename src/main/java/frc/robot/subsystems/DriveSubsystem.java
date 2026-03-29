@@ -69,7 +69,8 @@ private final DifferentialDriveKinematics m_kinematics =
 
 
 private final DifferentialDriveOdometry m_odometry;
-  
+private int m_dashboardCounter = 0;
+
 
   public DriveSubsystem() {
    
@@ -163,25 +164,29 @@ private double rightVelocityMetersPerSec() {
     getHeadingRotation2d(),
     leftDistanceMeters(),
     rightDistanceMeters());
-    SmartDashboard.putNumber("Gyro Heading", getHeading());
-    SmartDashboard.putNumber("Gyro Raw Yaw", m_gyro.getYaw());
-    SmartDashboard.putNumber("Drive/FL Encoder Position", m_leftEncoder.getPosition());
-    SmartDashboard.putNumber("Drive/RL Encoder Position", m_rearLeftEncoder.getPosition());
-    SmartDashboard.putNumber("Drive/FR Encoder Position", m_rightEncoder.getPosition());
-    SmartDashboard.putNumber("Drive/RR Encoder Position", m_rearRightEncoder.getPosition());
-    SmartDashboard.putNumber("Drive/FL Encoder Velocity", m_leftEncoder.getVelocity());
-    SmartDashboard.putNumber("Drive/RL Encoder Velocity", m_rearLeftEncoder.getVelocity());
-    SmartDashboard.putNumber("Drive/FR Encoder Velocity", m_rightEncoder.getVelocity());
-    SmartDashboard.putNumber("Drive/RR Encoder Velocity", m_rearRightEncoder.getVelocity());
-    SmartDashboard.putNumber("Drive/Left Distance (m)", leftDistanceMeters());
-    SmartDashboard.putNumber("Drive/Right Distance (m)", rightDistanceMeters());
-    SmartDashboard.putNumber("Drive/Left Speed (m/s)", leftVelocityMetersPerSec());
-    SmartDashboard.putNumber("Drive/Right Speed (m/s)", rightVelocityMetersPerSec());
-    SmartDashboard.putNumber("Gyro Pitch", m_gyro.getPitch());
-    SmartDashboard.putNumber("Gyro Pitch Rate (deg/s)", m_gyro.getRawGyroY());
-    SmartDashboard.putNumber("Speed Limit - Bump", getBumpSpeedFactor());
-    SmartDashboard.putNumber("Speed Limit - Rocking", getRockingSpeedFactor());
-    SmartDashboard.putNumber("Speed Limit - Wheel Slip", getWheelSlipSpeedFactor());
+    
+    if (++m_dashboardCounter >= 5) {
+      m_dashboardCounter = 0;
+      SmartDashboard.putNumber("Gyro Heading", getHeading());
+      SmartDashboard.putNumber("Gyro Raw Yaw", m_gyro.getYaw());
+      SmartDashboard.putNumber("Drive/FL Encoder Position", m_leftEncoder.getPosition());
+      SmartDashboard.putNumber("Drive/RL Encoder Position", m_rearLeftEncoder.getPosition());
+      SmartDashboard.putNumber("Drive/FR Encoder Position", m_rightEncoder.getPosition());
+      SmartDashboard.putNumber("Drive/RR Encoder Position", m_rearRightEncoder.getPosition());
+      SmartDashboard.putNumber("Drive/FL Encoder Velocity", m_leftEncoder.getVelocity());
+      SmartDashboard.putNumber("Drive/RL Encoder Velocity", m_rearLeftEncoder.getVelocity());
+      SmartDashboard.putNumber("Drive/FR Encoder Velocity", m_rightEncoder.getVelocity());
+      SmartDashboard.putNumber("Drive/RR Encoder Velocity", m_rearRightEncoder.getVelocity());
+      SmartDashboard.putNumber("Drive/Left Distance (m)", leftDistanceMeters());
+      SmartDashboard.putNumber("Drive/Right Distance (m)", rightDistanceMeters());
+      SmartDashboard.putNumber("Drive/Left Speed (m/s)", leftVelocityMetersPerSec());
+      SmartDashboard.putNumber("Drive/Right Speed (m/s)", rightVelocityMetersPerSec());
+      SmartDashboard.putNumber("Gyro Pitch", m_gyro.getPitch());
+      SmartDashboard.putNumber("Gyro Pitch Rate (deg/s)", m_gyro.getRawGyroY());
+      SmartDashboard.putNumber("Speed Limit - Bump", getBumpSpeedFactor());
+      SmartDashboard.putNumber("Speed Limit - Rocking", getRockingSpeedFactor());
+      SmartDashboard.putNumber("Speed Limit - Wheel Slip", getWheelSlipSpeedFactor());
+    }
   }
 
   // multiplies speeds down when going over bump

@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 
 import frc.robot.commands.AlignToClimb;
 import frc.robot.commands.AlignToHub;
@@ -59,8 +60,9 @@ public class RobotContainer {
    private SendableChooser<Command> m_autoChooser;
   public RobotContainer() {
 
-    // Start driver camera
-    CameraServer.startAutomaticCapture();
+    UsbCamera driverCam = CameraServer.startAutomaticCapture();
+    driverCam.setResolution(240, 180);
+    driverCam.setFPS(20);
 
     //PATHPLANNER \//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
     // Named commands MUST be registered before AutoBuilder.configure() (called in DriveSubsystem constructor)
