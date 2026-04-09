@@ -1,4 +1,4 @@
-package frc.robot.commands;
+  package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.ClimbConstants;
@@ -15,7 +15,7 @@ public class ClimbToStartingConfig extends Command {
 
   @Override
   public void initialize() {
-    m_speed = m_climb.getPosition() < ClimbConstants.kStartingConfig ? ClimbConstants.kClimbMotorUpPower : ClimbConstants.kClimbMotorDownPower;
+    m_speed = m_climb.getPosition() < ClimbConstants.kStartingConfig ? ClimbConstants.kClimbMotorDownPower : ClimbConstants.kClimbMotorUpPower;
     m_climb.setClimb(m_speed);
   }
 

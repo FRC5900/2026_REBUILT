@@ -15,7 +15,7 @@ public class ClimbToClimbPosition extends Command {
 
   @Override
   public void initialize() {
-    m_speed = m_climb.getPosition() < ClimbConstants.kClimbPosition ? ClimbConstants.kClimbMotorUpPower : ClimbConstants.kClimbMotorDownPower;
+    m_speed = m_climb.getPosition() < ClimbConstants.kClimbPosition ? ClimbConstants.kClimbMotorDownPower : ClimbConstants.kClimbMotorUpPower;
     m_climb.setClimb(m_speed);
   }
 

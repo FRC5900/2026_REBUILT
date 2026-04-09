@@ -15,7 +15,7 @@ public class ClimbToDrivePosition extends Command {
 
   @Override
   public void initialize() {
-    m_speed = m_climb.getPosition() < ClimbConstants.kDrivePosition ? ClimbConstants.kClimbMotorUpPower : ClimbConstants.kClimbMotorDownPower;
+    m_speed = m_climb.getPosition() < ClimbConstants.kDrivePosition ? ClimbConstants.kClimbMotorDownPower : ClimbConstants.kClimbMotorUpPower;
     m_climb.setClimb(m_speed);
   }
 

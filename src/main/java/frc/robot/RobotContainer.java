@@ -31,6 +31,7 @@ import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 //pathplanner stuff
@@ -58,6 +59,8 @@ public class RobotContainer {
     private final VisionSubsystem m_vision = new VisionSubsystem();
 
    private SendableChooser<Command> m_autoChooser;
+  private final LEDSubsystem m_leds = new LEDSubsystem();
+
   public RobotContainer() {
 
     UsbCamera driverCam = CameraServer.startAutomaticCapture();
@@ -65,6 +68,7 @@ public class RobotContainer {
     driverCam.setFPS(20);
 
     //PATHPLANNER \//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
     // Named commands MUST be registered before AutoBuilder.configure() (called in DriveSubsystem constructor)
     NamedCommands.registerCommand(
     "Intake",
@@ -72,7 +76,7 @@ public class RobotContainer {
 
     NamedCommands.registerCommand(
     "Puke",
-    new Puke(m_shooter));
+    new Puke(m_shooter, m_intake));
 
     NamedCommands.registerCommand(
     "Launch",
@@ -90,6 +94,9 @@ public class RobotContainer {
     SmartDashboard.putData("Auto Chooser", m_autoChooser);
 
     //PATHPLANNER /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+
+    // ── Default LED pattern
+    m_leds.setPattern(27); 
 
     configureButtonBindings();
 
@@ -134,7 +141,7 @@ public class RobotContainer {
         .onFalse(Commands.runOnce(() -> { if (m_intakeEnabled) new Intake(m_intake, m_shooter).schedule(); }));
 
     m_operatorController.a() // A, Puke
-        .whileTrue(new Puke(m_shooter));
+        .whileTrue(new Puke(m_shooter, m_intake));
 
     m_operatorController.y() // Y, 100% Full Potential launch
         .whileTrue(new RunCommand(() -> {

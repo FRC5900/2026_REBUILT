@@ -85,8 +85,8 @@ public final class Constants {
     public static final int kClimbMotorLimit = 40;
 
     //Climb Speeds
-    public static final double kClimbMotorDownPower = -0.7;
-    public static final double kClimbMotorUpPower = 0.7;
+    public static final double kClimbMotorDownPower = 1;
+    public static final double kClimbMotorUpPower = -1;
 
     //Through Bore Encoder DIO port (RoboRIO)
     public static final int kEncoderDIOPort = 3;
@@ -94,8 +94,8 @@ public final class Constants {
 
     //Climb Positions (encoder units) - re-measure after tuning kEncoderOffset
     public static final double kStartingConfig = 0;      // starting position before match
-    public static final double kDrivePosition = 182;       // retracted position for  driving around
-    public static final double kClimbPosition = -142;       // extended position for climbing
+    public static final double kDrivePosition = 170;       // retracted position for  driving around
+    public static final double kClimbPosition = -107;       // extended position for climbing
 
     public static final double kPositionTolerance = 2;
     
@@ -112,7 +112,7 @@ public final class Constants {
     public static final int kShooterLimit = 40;
 
     //Indexer Constants
-    public static final double kIndexerIntakingPower = -0.8;
+    public static final double kIndexerIntakingPower = -1;
     public static final double kIndexerLaunchPower = 1;
     public static final double kIndexerSpinUp = -0.5;
     public static final double kIndexSpinUpTime = 0.75;
@@ -132,6 +132,8 @@ public final class Constants {
 
   public static final class LEDConstants {
     public static final int kBlinkinPort = 0;
+    public static final int kLEDPort = 9;
+    public static final int kLEDLength = 540;
   }
 
   public static final class VisionConstants {
@@ -173,24 +175,33 @@ public final class Constants {
     public static final double kCamera1StdDevFactor = 1.0;
 
     //rotation
-    public static final double kAlignRotationP = 0.04;
+    public static final double kAlignRotationP = 0.022;  // was 0.04 - lower prevents overshoot
     public static final double kAlignRotationI = 0.0;
-    public static final double kAlignRotationD = 0.0;
+    public static final double kAlignRotationD = 0.004;  // added - dampens oscillation
     public static final double kAlignRotationTolerance = 2.5;
+    public static final double kAlignRotationMaxOutput = 0.38; // caps turn speed
 
     //distance
     public static final double kAlignDistanceP = 1.5;
     public static final double kAlignDistanceI = 0.0;
     public static final double kAlignDistanceD = 0.02;
-    public static final double kShootingDistanceMeters = 1.5; // closer for better accuracy
+    // Target distance from robot center to hub geometric center (57 inches per team spec).
+    // Distance is always measured pose-to-hub-center so this is consistent from any angle.
+    public static final double kShootingDistanceMeters = 1.4478; // 57 inches
     public static final double kDistanceToleranceMeters = 0.05;
 
-    //hub tags
+    // Primary hub tags (front-facing, used as the reference pair)
     public static final int kRedHubTagLeft = 9;
     public static final int kRedHubTagRight = 10;
     public static final int kBlueHubTagLeft = 25;
     public static final int kBlueHubTagRight = 26;
 
+    // All accessible hub tags per alliance (all 8 hub faces).
+    // Used to compute the true hub geometric center and find the best
+    // visible tag from side/corner approach angles.
+    public static final int[] kRedHubAllTagIds  = { 2, 3, 4, 5, 8, 9, 10, 11 };
+    public static final int[] kBlueHubAllTagIds = { 18, 19, 20, 21, 24, 25, 26, 27 };
+ 
     //climb/tower tags
     public static final int kRedClimbTagLeft = 15;
     public static final int kRedClimbTagRight = 16;

@@ -2,15 +2,20 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.VisionConstants;
 import java.util.List;
 import java.util.Optional;
+import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -21,9 +26,13 @@ public class VisionSubsystem extends SubsystemBase {
   private final Transform3d robotToCamera0;
   private final Transform3d robotToCamera1;
   private final BlinkinLEDController ledController;
+  private final PhotonPoseEstimator m_poseEstimator0;
+  private final PhotonPoseEstimator m_poseEstimator1;
+  private final Field2d m_field = new Field2d();
 
   private PhotonPipelineResult latestResult0;
   private PhotonPipelineResult latestResult1;
+  private Pose2d m_estimatedPose = null;
   private boolean hasTarget = false;
   private double targetYaw = 0.0;
   private double targetPitch = 0.0;
@@ -54,6 +63,13 @@ public class VisionSubsystem extends SubsystemBase {
             VisionConstants.kCamera1Roll,
             VisionConstants.kCamera1Pitch,
             VisionConstants.kCamera1Yaw));
+
+    m_poseEstimator0 = new PhotonPoseEstimator( // NOSONAR
+        fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotToCamera0);
+    m_poseEstimator1 = new PhotonPoseEstimator( // NOSONAR
+        fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotToCamera1);
+
+    SmartDashboard.putData("Vision/Field", m_field);
   }
 
   @Override
@@ -116,8 +132,22 @@ public class VisionSubsystem extends SubsystemBase {
       ledController.off();
     }
 
-    // smarty dashboardy
+    // ── Pose estimation ──────────────────────────────────────────────────
+    Optional<EstimatedRobotPose> est0 = (latestResult0 != null)
+        ? m_poseEstimator0.update(latestResult0) : Optional.empty();
+    Optional<EstimatedRobotPose> est1 = (latestResult1 != null)
+        ? m_poseEstimator1.update(latestResult1) : Optional.empty();
 
+    m_estimatedPose = null;
+    int tags0 = est0.map(e -> e.targetsUsed.size()).orElse(0);
+    int tags1 = est1.map(e -> e.targetsUsed.size()).orElse(0);
+    if (tags0 > 0 || tags1 > 0) {
+      EstimatedRobotPose best = (tags0 >= tags1) ? est0.get() : est1.get();
+      m_estimatedPose = best.estimatedPose.toPose2d();
+      m_field.setRobotPose(m_estimatedPose);
+    }
+
+    // smarty dashboardy
     SmartDashboard.putBoolean("Vision/HasTarget", hasTarget);
     SmartDashboard.putNumber("Vision/TargetYaw", targetYaw);
     SmartDashboard.putNumber("Vision/TargetPitch", targetPitch);
@@ -126,6 +156,16 @@ public class VisionSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Vision/TargetAmbiguity", bestTarget != null ? bestTarget.getPoseAmbiguity() : -1);
     SmartDashboard.putBoolean("Vision/Camera0Connected", camera0.isConnected());
     SmartDashboard.putBoolean("Vision/Camera1Connected", camera1.isConnected());
+    SmartDashboard.putBoolean("Vision/HasPoseEstimate", m_estimatedPose != null);
+    if (m_estimatedPose != null) {
+      SmartDashboard.putNumber("Vision/EstPoseX",   m_estimatedPose.getX());
+      SmartDashboard.putNumber("Vision/EstPoseY",   m_estimatedPose.getY());
+      SmartDashboard.putNumber("Vision/EstPoseRot", m_estimatedPose.getRotation().getDegrees());
+    }
+  }
+
+  public Pose2d getEstimatedPose() {
+    return m_estimatedPose;
   }
 
   public boolean hasTarget() {
@@ -227,6 +267,20 @@ public class VisionSubsystem extends SubsystemBase {
   public double getYawToTag(int tagId) {
     PhotonTrackedTarget target = getTargetById(tagId);
     return target != null ? target.getYaw() : 0.0;
+  }
+
+
+  public PhotonTrackedTarget getBestTagFromSet(int[] tagIds) {
+    PhotonTrackedTarget best = null;
+    double bestArea = 0;
+    for (int id : tagIds) {
+      PhotonTrackedTarget t = getTargetById(id);
+      if (t != null && t.getArea() > bestArea) {
+        best = t;
+        bestArea = t.getArea();
+      }
+    }
+    return best;
   }
 
 
