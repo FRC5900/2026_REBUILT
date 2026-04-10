@@ -96,6 +96,7 @@ public final class Constants {
     public static final double kStartingConfig = 0;      // starting position before match
     public static final double kDrivePosition = 170;       // retracted position for  driving around
     public static final double kClimbPosition = -107;       // extended position for climbing
+    public static final double kAutoClimbPosition = -107;   // extended position for auto climbing (tune separately)
 
     public static final double kPositionTolerance = 2;
     

@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.7720521945432983,
-        "y": 4.083416370106762
+        "x": 1.8897983392645323,
+        "y": 4.051138790035587
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.126500593119811,
-        "y": 4.083416370106762
+        "x": 1.6397983392645323,
+        "y": 4.051138790035587
       },
       "isLocked": false,
-      "linkedName": "middle shoot position"
+      "linkedName": "SHOOT POS"
     },
     {
       "anchor": {
-        "x": 1.6208185053380788,
-        "y": 4.083416370106762
+        "x": 1.5885409252669045,
+        "y": 4.051138790035587
       },
       "prevControl": {
-        "x": 1.8708185053380788,
-        "y": 4.083416370106762
+        "x": 1.8385409252669045,
+        "y": 4.051138790035587
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,9 +33,9 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.5,
-    "maxAcceleration": 0.75,
-    "maxAngularVelocity": 180.0,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false
@@ -44,11 +44,11 @@
     "velocity": 0,
     "rotation": 0.0
   },
-  "reversed": false,
+  "reversed": true,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

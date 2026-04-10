@@ -23,6 +23,7 @@ import frc.robot.commands.Intake;
 import frc.robot.commands.LaunchSequence;
 import frc.robot.commands.ClimbToDrivePosition;
 import frc.robot.commands.ClimbToStartingConfig;
+import frc.robot.commands.AutoClimb;
 import frc.robot.commands.ClimbToClimbPosition;
 import frc.robot.commands.TurnBy180;
 import frc.robot.commands.Puke;
@@ -86,7 +87,7 @@ public class RobotContainer {
     new ClimbToDrivePosition(m_climber));
     NamedCommands.registerCommand(
     "Climb",
-    new ClimbToClimbPosition(m_climber));
+    new AutoClimb(m_climber));
 
     m_drive = new DriveSubsystem();
 
