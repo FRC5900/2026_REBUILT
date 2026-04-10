@@ -25,7 +25,7 @@ public final class Constants {
     public static final int kRearRightCanId = 3;
 
     public static final double kDeadband = 0.08;
-    public static final double kMaxOutput = -1; // speed i lowered it for you lol
+    public static final double kMaxOutput = -0.75; // speed i lowered it for you lol
     public static final double kTurnMaxOutput = 1; // added to make the thing not be bad
     public static final double kTurnSlewRate = 4.2; // units per second
     public static final double kForwardAccelSlewRate = 4.0; // units/sec
@@ -36,7 +36,7 @@ public final class Constants {
     public static final double kTrackWidthMeters = 0.5906;
     public static final double kWheelDiameterMeters = 0.1524; // 6" wheels = 0.1524m
     public static final double kGearRatio = 8.46; //motor rotations per wheel rotation     WE NEED TO FIGURE THIS OUT :D -- Justin
-    public static final double kMaxSpeedMetersPerSec = -1;
+    public static final double kMaxSpeedMetersPerSec = 0;
 
     // Turn to angle (180 flip)
     public static final double kTurnP = 0.040;           // TODO: tune

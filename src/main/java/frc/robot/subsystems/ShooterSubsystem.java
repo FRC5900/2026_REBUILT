@@ -40,7 +40,6 @@ public class ShooterSubsystem extends SubsystemBase {
     m_rightShooter.configure(shooterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     shooterConfig.inverted(true);
     m_leftShooter.configure(shooterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
     m_leftEncoder = m_leftShooter.getEncoder();
     m_rightEncoder = m_rightShooter.getEncoder();
     
