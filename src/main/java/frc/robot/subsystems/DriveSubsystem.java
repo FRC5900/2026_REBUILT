@@ -163,7 +163,7 @@ private double rightVelocityMetersPerSec() {
             m_odometry.update(
     getHeadingRotation2d(),
     leftDistanceMeters(),
-    rightDistanceMeters());
+    -rightDistanceMeters());
     
     if (++m_dashboardCounter >= 5) {
       m_dashboardCounter = 0;
@@ -259,7 +259,7 @@ public ChassisSpeeds getRobotRelativeSpeeds() {
   DifferentialDriveWheelSpeeds ws =
       new DifferentialDriveWheelSpeeds(
           leftVelocityMetersPerSec(),
-          rightVelocityMetersPerSec());
+          -rightVelocityMetersPerSec());
 
   return m_kinematics.toChassisSpeeds(ws);
 }
