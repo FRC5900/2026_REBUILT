@@ -35,8 +35,8 @@ public final class Constants {
     // Pathplanner stuff
     public static final double kTrackWidthMeters = 0.5906;
     public static final double kWheelDiameterMeters = 0.1524; // 6" wheels = 0.1524m
-    public static final double kGearRatio = 8.46; //motor rotations per wheel rotation     WE NEED TO FIGURE THIS OUT :D -- Justin
-    public static final double kMaxSpeedMetersPerSec = 0;
+    public static final double kGearRatio = 10.71; //motor rotations per wheel rotation (AM14U6 default)
+    public static final double kMaxSpeedMetersPerSec = 4.23;
 
     // Turn to angle (180 flip)
     public static final double kTurnP = 0.040;           // TODO: tune
