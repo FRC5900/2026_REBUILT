@@ -172,34 +172,29 @@ public class LEDSubsystem extends SubsystemBase {
   // ── Periodic ──────────────────────────────────────────────────────────────────
   @Override
   public void periodic() {
-    // Show stripe whenever DS is not attached
+    // Render base pattern into the full 540-LED buffer first
     if (!DriverStation.isDSAttached()) {
       stripeWhiteNavy();
-      m_tick++;
-      return;
-    }
-
-    // Auton during colours
-    if (DriverStation.isAutonomousEnabled()) {
+    } else if (DriverStation.isAutonomousEnabled()) {
       twinkles();
-      m_tick++;
-      return;
-    }
-
-    if (m_debugMode) {
-      SmartDashboard.putNumber("LED Pattern ID",   m_pattern.ordinal());
-      SmartDashboard.putString("LED Pattern Name", m_pattern.name());
-
-      if (m_tick > 0 && m_tick % DEBUG_TICKS == 0) {
-        m_pattern   = Pattern.next(m_pattern);
-        m_offset    = 0;
-        m_larsonPos = 0;
-        m_larsonDir = 1;
-        m_shotPos   = 0;
+    } else {
+      if (m_debugMode) {
+        SmartDashboard.putNumber("LED Pattern ID",   m_pattern.ordinal());
+        SmartDashboard.putString("LED Pattern Name", m_pattern.name());
+        if (m_tick > 0 && m_tick % DEBUG_TICKS == 0) {
+          m_pattern   = Pattern.next(m_pattern);
+          m_offset    = 0;
+          m_larsonPos = 0;
+          m_larsonDir = 1;
+          m_shotPos   = 0;
+        }
       }
+      renderPattern();
     }
 
-    renderPattern();
+    // Overlay: overwrite only the last 5 LEDs with a blinking red indicator.
+    // The rest of the buffer (0-534) is untouched from the pattern above.
+    redBlink();
     m_tick++;
   }
 
@@ -472,6 +467,16 @@ public class LEDSubsystem extends SubsystemBase {
       int pos = (i + scroll) % period;
       if (pos < stripeWidth) m_buffer.setRGB(i, 255, 255, 255);
       else                   m_buffer.setRGB(i, 0, 8, 45);
+    }
+    m_led.setData(m_buffer);
+  }
+
+  //blinkly red eye
+  private void redBlink() {
+    int len = m_buffer.getLength();
+    boolean on = (m_tick / 12) % 2 == 0;
+    for (int i = len - 5; i < len; i++) {
+      m_buffer.setRGB(i, on ? 255 : 0, 0, 0);
     }
     m_led.setData(m_buffer);
   }
