@@ -118,9 +118,10 @@ public class LEDSubsystem extends SubsystemBase {
   private int     m_tick    = 0;
   private int     m_offset  = 0;
 
-  private int m_larsonPos = 0;
-  private int m_larsonDir = 1;
-  private int m_shotPos   = 0;
+  private int     m_larsonPos = 0;
+  private int     m_larsonDir = 1;
+  private int     m_shotPos   = 0;
+  private boolean m_prevDSAttached = false;
 
   // Debug cycling
   private boolean m_debugMode  = false;
@@ -172,8 +173,13 @@ public class LEDSubsystem extends SubsystemBase {
   // ── Periodic ──────────────────────────────────────────────────────────────────
   @Override
   public void periodic() {
-    // Render base pattern into the full 540-LED buffer first
-    if (!DriverStation.isDSAttached()) {
+    boolean dsNow = DriverStation.isDSAttached();
+    if (dsNow && !m_prevDSAttached) {
+      fill(0, 0, 0);
+    }
+    m_prevDSAttached = dsNow;
+
+    if (!dsNow) {
       stripeWhiteNavy();
     } else if (DriverStation.isAutonomousEnabled()) {
       twinkles();
@@ -192,9 +198,9 @@ public class LEDSubsystem extends SubsystemBase {
       renderPattern();
     }
 
-    // Overlay: overwrite only the last 5 LEDs with a blinking red indicator.
-    // The rest of the buffer (0-534) is untouched from the pattern above.
-    redBlink();
+    // Solid red on the last 5 LEDs — applied after every pattern, single setData below.
+    redIndicator();
+    m_led.setData(m_buffer);
     m_tick++;
   }
 
@@ -245,7 +251,6 @@ public class LEDSubsystem extends SubsystemBase {
     if (glitter && m_random.nextInt(10) == 0) {
       m_buffer.setRGB(m_random.nextInt(len), 255, 255, 255);
     }
-    m_led.setData(m_buffer);
   }
 
   // Random coloured sparkles on a fading black background
@@ -261,7 +266,6 @@ public class LEDSubsystem extends SubsystemBase {
     if (m_random.nextInt(3) == 0) {
       m_buffer.setHSV(m_random.nextInt(len), m_random.nextInt(180), 200, 255);
     }
-    m_led.setData(m_buffer);
   }
 
   // Single coloured dot going around the strip with a fading trail
@@ -274,7 +278,6 @@ public class LEDSubsystem extends SubsystemBase {
       double br = 1.0 - t / (double) trailLen;
       m_buffer.setRGB(pos, (int)(r * br), (int)(g * br), (int)(b * br));
     }
-    m_led.setData(m_buffer);
     m_shotPos = (m_shotPos + 4) % len;
   }
 
@@ -290,7 +293,6 @@ public class LEDSubsystem extends SubsystemBase {
     }
     int pos = (int)((Math.sin(m_tick * 0.05) * 0.5 + 0.5) * (len - 1));
     m_buffer.setHSV(pos, m_tick % 180, 255, 255);
-    m_led.setData(m_buffer);
   }
 
   // Rainbow hue across the strip
@@ -302,7 +304,6 @@ public class LEDSubsystem extends SubsystemBase {
       int hue = (int)(i * 180.0 / len + m_tick) % 180;
       m_buffer.setHSV(i, hue, 255, v);
     }
-    m_led.setData(m_buffer);
   }
 
   // fire
@@ -325,7 +326,6 @@ public class LEDSubsystem extends SubsystemBase {
       else if (t192 >  64) m_buffer.setRGB(i, 255, ramp,   0);
       else                 m_buffer.setRGB(i, ramp,   0,   0);
     }
-    m_led.setData(m_buffer);
   }
 
   // Random sparkle in random colours then fade
@@ -343,7 +343,6 @@ public class LEDSubsystem extends SubsystemBase {
         m_buffer.setHSV(m_random.nextInt(len), m_random.nextInt(180), 200, 200);
       }
     }
-    m_led.setData(m_buffer);
   }
 
   // colour sweep
@@ -354,7 +353,6 @@ public class LEDSubsystem extends SubsystemBase {
       int hue = (int)((Math.sin(phase) * 0.5 + 0.5) * 180);
       m_buffer.setHSV(i, hue, 255, 200);
     }
-    m_led.setData(m_buffer);
   }
 
   // bouncing dot
@@ -375,7 +373,6 @@ public class LEDSubsystem extends SubsystemBase {
         m_buffer.setRGB(pos, (int)(r * br), (int)(g * br), (int)(b * br));
       }
     }
-    m_led.setData(m_buffer);
     if (m_tick % 2 == 0) {
       m_larsonPos += m_larsonDir;
       if (m_larsonPos >= len - 1 || m_larsonPos <= 0) m_larsonDir *= -1;
@@ -392,7 +389,6 @@ public class LEDSubsystem extends SubsystemBase {
       m_buffer.setRGB(pos, r, g, b);
       if (pos + 1 < len) m_buffer.setRGB(pos + 1, r / 2, g / 2, b / 2);
     }
-    m_led.setData(m_buffer);
     if (m_tick % 2 == 0) m_offset = (m_offset + 1) % len;
   }
 
@@ -404,21 +400,18 @@ public class LEDSubsystem extends SubsystemBase {
     else if (phase < 30) brightness = Math.sin((phase - 15) * Math.PI / 15.0) * 0.6;
     brightness = Math.max(0, brightness);
     fill((int)(r * brightness), (int)(g * brightness), (int)(b * brightness));
-    m_led.setData(m_buffer);
   }
 
   // breathe white
   private void breath(int r, int g, int b) {
     double brightness = Math.sin(m_tick * 2 * Math.PI / 150.0) * 0.5 + 0.5;
     fill((int)(r * brightness), (int)(g * brightness), (int)(b * brightness));
-    m_led.setData(m_buffer);
   }
 
   // strobe white
   private void strobe(int r, int g, int b) {
     boolean on = (m_tick % 8) == 0;
     fill(on ? r : 0, on ? g : 0, on ? b : 0);
-    m_led.setData(m_buffer);
   }
 
 // pink yellow blue scrolling
@@ -429,7 +422,6 @@ public class LEDSubsystem extends SubsystemBase {
       int hue = (int)((GRADIENT_START_HUE + t * 180) % 180);
       m_buffer.setHSV(i, hue, 230, 240);
     }
-    m_led.setData(m_buffer);
     m_offset = (m_offset + SCROLL_SPEED) % len;
   }
 
@@ -453,7 +445,6 @@ public class LEDSubsystem extends SubsystemBase {
             (int)(45 + br * (255 - 45)));
       }
     }
-    m_led.setData(m_buffer);
     m_offset = (m_offset + 2) % len;
   }
 
@@ -468,17 +459,15 @@ public class LEDSubsystem extends SubsystemBase {
       if (pos < stripeWidth) m_buffer.setRGB(i, 255, 255, 255);
       else                   m_buffer.setRGB(i, 0, 8, 45);
     }
-    m_led.setData(m_buffer);
   }
 
-  //blinkly red eye
-  private void redBlink() {
+  //blinky red eye
+  private void redIndicator() {
     int len = m_buffer.getLength();
     boolean on = (m_tick / 12) % 2 == 0;
     for (int i = len - 5; i < len; i++) {
       m_buffer.setRGB(i, on ? 255 : 0, 0, 0);
     }
-    m_led.setData(m_buffer);
   }
 
   // ── Solid colour renderer ─────────────────────────────────────────────────────
@@ -486,7 +475,6 @@ public class LEDSubsystem extends SubsystemBase {
     int idx = m_pattern.ordinal() - HOT_PINK_ORD;
     int[] c = (idx >= 0 && idx < SOLID_RGB.length) ? SOLID_RGB[idx] : new int[]{0, 0, 0};
     fill(c[0], c[1], c[2]);
-    m_led.setData(m_buffer);
   }
 
   // ── Helpers ───────────────────────────────────────────────────────────────────
