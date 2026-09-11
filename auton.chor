@@ -1,0 +1,84 @@
+{
+ "name":"auton",
+ "version":2,
+ "type":"Differential",
+ "variables":{
+  "expressions":{},
+  "poses":{}
+ },
+ "config":{
+  "frontLeft":{
+   "x":{
+    "exp":"11 in",
+    "val":0.2794
+   },
+   "y":{
+    "exp":"11 in",
+    "val":0.2794
+   }
+  },
+  "backLeft":{
+   "x":{
+    "exp":"-11 in",
+    "val":-0.2794
+   },
+   "y":{
+    "exp":"11 in",
+    "val":0.2794
+   }
+  },
+  "mass":{
+   "exp":"45.81 kg",
+   "val":45.81
+  },
+  "inertia":{
+   "exp":"6 kg m ^ 2",
+   "val":6.0
+  },
+  "gearing":{
+   "exp":"10.71",
+   "val":10.71
+  },
+  "radius":{
+   "exp":"0.076 m",
+   "val":0.076
+  },
+  "vmax":{
+   "exp":"6000 RPM",
+   "val":628.3185307179587
+  },
+  "tmax":{
+   "exp":"1.2 N * m",
+   "val":1.2
+  },
+  "cof":{
+   "exp":"1.14",
+   "val":1.14
+  },
+  "bumper":{
+   "front":{
+    "exp":"0.9 m",
+    "val":0.9
+   },
+   "side":{
+    "exp":"0.9 m",
+    "val":0.9
+   },
+   "back":{
+    "exp":"0.9 m",
+    "val":0.9
+   }
+  },
+  "differentialTrackWidth":{
+   "exp":"0.591 m",
+   "val":0.591
+  }
+ },
+ "generationFeatures":[],
+ "codegen":{
+  "root":"../C:/Users/robotics/Documents/Workspace 2026/2026_REBUILT",
+  "genVars":true,
+  "genTrajData":true,
+  "useChoreoLib":true
+ }
+}
