@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
@@ -15,12 +16,14 @@ import frc.robot.Constants.ClimbConstants;
 public class ClimbSubsystem extends SubsystemBase {
   private final SparkMax m_rightClimbMotor;
   private final SparkMax m_leftClimbMotor;
-  private final RelativeEncoder m_encoder;
+  //private final RelativeEncoder m_encoder;
+  private final AbsoluteEncoder m_encoder;
 
   public ClimbSubsystem() {
     m_rightClimbMotor = new SparkMax(ClimbConstants.kRightClimbMotorCanId, MotorType.kBrushless);
     m_leftClimbMotor = new SparkMax(ClimbConstants.kLeftClimbMotorCanId, MotorType.kBrushless);
-    m_encoder = m_rightClimbMotor.getEncoder();
+    //m_encoder = m_rightClimbMotor.getEncoder();
+    m_encoder = (AbsoluteEncoder) m_rightClimbMotor.getEncoder();
 
     SparkMaxConfig rightConfig = new SparkMaxConfig();
     rightConfig.smartCurrentLimit(ClimbConstants.kClimbMotorLimit);
@@ -32,7 +35,8 @@ public class ClimbSubsystem extends SubsystemBase {
     leftConfig.idleMode(IdleMode.kBrake);
     m_leftClimbMotor.configure(leftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    m_encoder.setPosition(0.0);
+    //m_encoder.setPosition(0.0);
+    ((RelativeEncoder) m_encoder).setPosition(0.0);
   }
 
   public void setClimb(double power) {
