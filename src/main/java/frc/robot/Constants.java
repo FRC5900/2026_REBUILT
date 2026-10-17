@@ -95,8 +95,8 @@ public final class Constants {
     //Climb Positions (encoder units) - re-measure after tuning kEncoderOffset
     public static final double kStartingConfig = 0;      // starting position before match
     public static final double kDrivePosition = 199;       // retracted position for  driving around
-    public static final double kClimbPosition = -107;       // extended position for climbing
-    public static final double kAutoClimbPosition = -107;   // extended position for auto climbing (tune separately)
+    public static final double kClimbPosition = 350;       // extended position for climbing 
+    public static final double kAutoClimbPosition = 350;   // extended position for auto climbing (tune separately) 
 
     public static final double kPositionTolerance = 2;
     
@@ -119,10 +119,10 @@ public final class Constants {
     public static final double kIndexSpinUpTime = 0.75;
 
     //Launcher Speeds
-    public static final double kShooterLaunchPower = 0.89;
-    public static final double kLaunchPower = 0.89;
+    public static final double kShooterLaunchPower = 0.92; //Was 0.89 PH
+    public static final double kLaunchPower = 0.92; // Was 0.89 PH
     public static final double kShooterPukePower = -0.8;
-    public static final double kShooterTargetRPM = 4000.0;
+    public static final double kShooterTargetRPM = 4500.0;
     public static final double kShooterSpeedTolerance = 200.0;
 
     //Intake

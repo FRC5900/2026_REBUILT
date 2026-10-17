@@ -133,28 +133,37 @@ public class RobotContainer {
   
     // Operator controls
 
-    m_operatorController.leftBumper() // Left Bumper, Intake (toggle)
+    /*m_operatorController.leftBumper() // Left Bumper, Intake (toggle)
         .onTrue(Commands.runOnce(() -> m_intakeEnabled = !m_intakeEnabled));
     new Trigger(() -> m_intakeEnabled).whileTrue(new Intake(m_intake, m_shooter));
+    */
+    m_operatorController.leftTrigger() // Left Bumper Intake (momentary)
+        .whileTrue(new Intake(m_intake,m_shooter))
+        .onFalse(Commands.runOnce(() -> { if (m_intakeEnabled) new Intake(m_intake, m_shooter).schedule(); }));
 
-    m_operatorController.rightBumper() // Right Bumper, Launch
+    /*m_operatorController.rightBumper() // Right Bumper, Launch
+        .whileTrue(new LaunchSequence(m_shooter, m_intake))
+        .onFalse(Commands.runOnce(() -> { if (m_intakeEnabled) new Intake(m_intake, m_shooter).schedule(); }));
+    */
+    m_operatorController.rightTrigger() // Right Trigger, Launch
         .whileTrue(new LaunchSequence(m_shooter, m_intake))
         .onFalse(Commands.runOnce(() -> { if (m_intakeEnabled) new Intake(m_intake, m_shooter).schedule(); }));
 
     m_operatorController.a() // A, Puke
         .whileTrue(new Puke(m_shooter, m_intake));
 
-    m_operatorController.y() // Y, 100% Full Potential launch
+    /*m_operatorController.y() // Y, 100% Full Potential launch
         .whileTrue(new RunCommand(() -> {
           m_shooter.setShooterRoller(1.0);
           m_shooter.setIndexer(ShooterConstants.kIndexerLaunchPower);
         }, m_shooter));
+    */
 
-    m_operatorController.povDown() // D-Pad Down, Climb Up
-        .whileTrue(new ClimbUp(m_climber));
-
-    m_operatorController.povUp() // D-Pad Up, Climb Down
+    m_operatorController.povDown() // D-Pad Down, Climb Down
         .whileTrue(new ClimbDown(m_climber));
+
+    m_operatorController.povUp() // D-Pad Up, Climb Up
+        .whileTrue(new ClimbUp(m_climber));
 
         // i know this is weird, just bear with me
 
@@ -172,8 +181,8 @@ public class RobotContainer {
     m_driverController.a() // A Button, Align to Hub
         .whileTrue(new AlignToHub(m_drive, m_vision));
 
-    m_driverController.x() // X Button, Flip robot 180
-        .onTrue(new TurnBy180(m_drive));
+    //m_driverController.x() // X Button, Flip robot 180
+    //    .onTrue(new TurnBy180(m_drive));
 
     m_driverController.b() // B Button, Align to Climb
         .whileTrue(new AlignToClimb(m_drive, m_vision));
