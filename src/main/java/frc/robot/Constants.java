@@ -6,6 +6,11 @@ package frc.robot;
 
 import com.ctre.phoenix6.swerve.SwerveDrivetrain.SwerveControlParameters;
 
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -89,7 +94,14 @@ public final class Constants {
     public static final double kClimbMotorUpPower = -1;
 
     //Through Bore Encoder DIO port (RoboRIO)
-    public static final int kEncoderDIOPort = 3;
+    public static final int kEncoderDIOPortA = 9;
+    public static final int kEncoderDIOPortB = 8;
+    //DutyCycleEncoder m_dutyCycleEncoder = new DutyCycleEncoder(3);
+    //double angleRads = m_dutyCycleEncoder.getAbsolutePosition() * 2 * Math.PI;
+    //double absolutePosition = m_dutyCycleEncoder.getAbsolutePositionUnit().getRotations();
+  
+  
+
 
 
     //Climb Positions (encoder units) - re-measure after tuning kEncoderOffset
