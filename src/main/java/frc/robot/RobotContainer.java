@@ -43,24 +43,24 @@ import com.pathplanner.lib.auto.NamedCommands;
 import frc.robot.subsystems.VisionSubsystem;
 
 public class RobotContainer {
-  private final CommandXboxController m_driverController = new CommandXboxController(0);
-  private final CommandXboxController m_operatorController = new CommandXboxController(1);
+    private final CommandXboxController m_driverController = new CommandXboxController(0);
+    private final CommandXboxController m_operatorController = new CommandXboxController(1);
 
-  private final SlewRateLimiter m_turnLimiter =
-      new SlewRateLimiter(Constants.DriveConstants.kTurnSlewRate);
-  private double m_prevForward = 0.0;
+    private final SlewRateLimiter m_turnLimiter =
+        new SlewRateLimiter(Constants.DriveConstants.kTurnSlewRate);
+    private double m_prevForward = 0.0;
 
-  private boolean m_intakeEnabled = false;
+    private boolean m_intakeEnabled = false;
 
-  private final DriveSubsystem m_drive;
-  private final IntakeSubsystem m_intake = new IntakeSubsystem();
-  private final ClimbSubsystem m_climber = new ClimbSubsystem();
-  private final ShooterSubsystem m_shooter = new ShooterSubsystem();
+    private final DriveSubsystem m_drive;
+    private final IntakeSubsystem m_intake = new IntakeSubsystem();
+    private final ClimbSubsystem m_climber = new ClimbSubsystem();
+    private final ShooterSubsystem m_shooter = new ShooterSubsystem();
 
     private final VisionSubsystem m_vision = new VisionSubsystem();
 
-   private SendableChooser<Command> m_autoChooser;
-  private final LEDSubsystem m_leds = new LEDSubsystem();
+    private SendableChooser<Command> m_autoChooser;
+    private final LEDSubsystem m_leds = new LEDSubsystem();
 
   public RobotContainer() {
 

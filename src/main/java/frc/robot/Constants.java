@@ -119,8 +119,8 @@ public final class Constants {
     public static final double kIndexSpinUpTime = 0.75;
 
     //Launcher Speeds
-    public static final double kShooterLaunchPower = 0.92; //Was 0.89 PH
-    public static final double kLaunchPower = 0.92; // Was 0.89 PH
+    public static final double kShooterLaunchPower = 1; //Was 0.89 PH
+    public static final double kLaunchPower = 1; // Was 0.89 PH
     public static final double kShooterPukePower = -0.8;
     public static final double kShooterTargetRPM = 4500.0;
     public static final double kShooterSpeedTolerance = 200.0;
